@@ -1,0 +1,89 @@
+name: Protected public API verification
+
+on:
+  workflow_dispatch:
+    inputs:
+      recipe:
+        description: Bounded recipe or complete eighteen-recipe matrix
+        required: true
+        default: '01'
+        type: choice
+        options: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', all]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cookbook-live-production
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    environment: production-verification
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        language: [python, nodejs, typescript, php, csharp, java, go]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v7
+        if: matrix.language == 'nodejs' || matrix.language == 'typescript'
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: shivammathur/setup-php@v2
+        if: matrix.language == 'php'
+        with:
+          php-version: '8.3'
+      - uses: actions/setup-dotnet@v6
+        if: matrix.language == 'csharp'
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-java@v6
+        if: matrix.language == 'java'
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-go@v7
+        if: matrix.language == 'go'
+        with:
+          go-version: '1.23'
+          cache: true
+      - name: Build TypeScript
+        if: matrix.language == 'typescript'
+        run: npm ci && npm run build
+      - name: Verify production public contracts with bounded requests
+        env:
+          GRIDICS_API_KEY: ${{ secrets.GRIDICS_API_KEY }}
+          GRIDICS_API_BASE_URL: https://api.gridics.com
+          GRIDICS_VERIFICATION_PROFILE: ${{ vars.GRIDICS_VERIFICATION_PROFILE }}
+          GRIDICS_MARKET_ID: ${{ vars.GRIDICS_MARKET_ID }}
+          GRIDICS_PLACE_ID: ${{ vars.GRIDICS_PLACE_ID }}
+          GRIDICS_PARCEL_ID: ${{ vars.GRIDICS_PARCEL_ID }}
+          GRIDICS_APN: ${{ vars.GRIDICS_APN }}
+          GRIDICS_ADDRESS: ${{ vars.GRIDICS_ADDRESS }}
+          GRIDICS_POSTAL_CODE: ${{ vars.GRIDICS_POSTAL_CODE }}
+          GRIDICS_LOCATION_QUERY: ${{ vars.GRIDICS_LOCATION_QUERY }}
+          GRIDICS_LOCATION_MODE: ${{ vars.GRIDICS_LOCATION_MODE }}
+          GRIDICS_LOCATION_LIMIT: ${{ vars.GRIDICS_LOCATION_LIMIT }}
+          GRIDICS_LOCATION_COUNTRY: ${{ vars.GRIDICS_LOCATION_COUNTRY }}
+          GRIDICS_LOCATION_LANGUAGE: ${{ vars.GRIDICS_LOCATION_LANGUAGE }}
+          GRIDICS_LOCATION_PROXIMITY: ${{ vars.GRIDICS_LOCATION_PROXIMITY }}
+          GRIDICS_LOCATION_BBOX: ${{ vars.GRIDICS_LOCATION_BBOX }}
+        run: >-
+          python3 tools/verify_live.py --language '${{ matrix.language }}'
+          --recipe '${{ inputs.recipe }}'
+          --output 'reports/live/evidence-${{ matrix.language }}.json'
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: public-api-production-${{ matrix.language }}-${{ github.run_id }}
+          path: reports/live/evidence-*.json
+          if-no-files-found: warn
+          retention-days: 30

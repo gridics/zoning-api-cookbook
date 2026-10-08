@@ -1,0 +1,766 @@
+{
+  "synthetic": true,
+  "cases": [
+    {
+      "name": "address",
+      "locator": "address",
+      "lookup_status": 200,
+      "lookup_response": {
+        "data": {
+          "id": "parcel_returned_017",
+          "place_id": "place_example_county",
+          "market_ids": [
+            "market_returned_017"
+          ],
+          "identifiers": {
+            "group_id": "parcel_returned_017",
+            "apn": "000000000001"
+          },
+          "centroid": {
+            "type": "Point",
+            "coordinates": [
+              -80.0,
+              25.0
+            ]
+          },
+          "fields": {
+            "parcel.address": "100 Example Ave",
+            "parcel.apn": "000000000001",
+            "parcel.lot_area": 7500,
+            "parcel.vacant": false,
+            "zoning.code": "SYN-R1"
+          }
+        },
+        "meta": {
+          "request_id": "synthetic-lookup-017",
+          "restricted_by_entitlement": true
+        }
+      },
+      "zoning_status": 200,
+      "zoning_response": {
+        "data": {
+          "group_id": "parcel_returned_017",
+          "calculation_status": "complete",
+          "id": "synthetic_zoning_017",
+          "updated_at": "2026-10-02T00:00:00Z",
+          "buildings": [
+            {
+              "Id": "synthetic-building",
+              "Envelope": {
+                "PrincipalMaxHeight": 42,
+                "EffectivePFrontSetbackPrincipal": 20
+              }
+            }
+          ]
+        },
+        "meta": {
+          "request_id": "synthetic-zoning-017",
+          "market_id": "market_returned_017",
+          "place_id": "place_example_county"
+        }
+      },
+      "expected_requests": 2,
+      "expected_report": {
+        "kind": "appraiser_zoning",
+        "property": {
+          "id": "parcel_returned_017",
+          "place_id": "place_example_county",
+          "market_ids": [
+            "market_returned_017"
+          ],
+          "identifiers": {
+            "group_id": "parcel_returned_017",
+            "apn": "000000000001"
+          },
+          "centroid": {
+            "type": "Point",
+            "coordinates": [
+              -80.0,
+              25.0
+            ]
+          },
+          "fields": {
+            "parcel.address": "100 Example Ave",
+            "parcel.apn": "000000000001",
+            "parcel.lot_area": 7500,
+            "parcel.vacant": false,
+            "zoning.code": "SYN-R1"
+          }
+        },
+        "zoning": {
+          "group_id": "parcel_returned_017",
+          "calculation_status": "complete",
+          "id": "synthetic_zoning_017",
+          "updated_at": "2026-10-02T00:00:00Z",
+          "buildings": [
+            {
+              "Id": "synthetic-building",
+              "Envelope": {
+                "PrincipalMaxHeight": 42,
+                "EffectivePFrontSetbackPrincipal": 20
+              }
+            }
+          ]
+        },
+        "provenance": [
+          {
+            "step": "property",
+            "status": "ok",
+            "request_id": "synthetic-lookup-017"
+          },
+          {
+            "step": "zoning",
+            "status": "ok",
+            "request_id": "synthetic-zoning-017"
+          }
+        ],
+        "unknowns": [
+          "zoning description",
+          "development capacity",
+          "permitted uses (retrieve separately when authorized)"
+        ],
+        "professional_boundary": "Factual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.",
+        "markdown": "# Gridics appraisal subject summary\n\nAddress: 100 Example Ave\nParcel: parcel_returned_017\nAPN: 000000000001\nZoning designation: SYN-R1\nRequest IDs: synthetic-lookup-017, synthetic-zoning-017\nUnknown/unavailable: zoning description; development capacity; permitted uses (retrieve separately when authorized)\nFactual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.\n"
+      }
+    },
+    {
+      "name": "apn",
+      "locator": "apn",
+      "lookup_status": 200,
+      "lookup_response": {
+        "data": {
+          "id": "parcel_returned_017",
+          "place_id": "place_example_county",
+          "market_ids": [
+            "market_returned_017"
+          ],
+          "identifiers": {
+            "group_id": "parcel_returned_017",
+            "apn": "000000000001"
+          },
+          "centroid": {
+            "type": "Point",
+            "coordinates": [
+              -80.0,
+              25.0
+            ]
+          },
+          "fields": {
+            "parcel.address": "100 Example Ave",
+            "parcel.apn": "000000000001",
+            "parcel.lot_area": 7500,
+            "parcel.vacant": false,
+            "zoning.code": "SYN-R1"
+          }
+        },
+        "meta": {
+          "request_id": "synthetic-lookup-017",
+          "restricted_by_entitlement": true
+        }
+      },
+      "zoning_status": 200,
+      "zoning_response": {
+        "data": {
+          "group_id": "parcel_returned_017",
+          "calculation_status": "complete",
+          "id": "synthetic_zoning_017",
+          "updated_at": "2026-10-02T00:00:00Z",
+          "buildings": [
+            {
+              "Id": "synthetic-building",
+              "Envelope": {
+                "PrincipalMaxHeight": 42,
+                "EffectivePFrontSetbackPrincipal": 20
+              }
+            }
+          ]
+        },
+        "meta": {
+          "request_id": "synthetic-zoning-017",
+          "market_id": "market_returned_017",
+          "place_id": "place_example_county"
+        }
+      },
+      "expected_requests": 2,
+      "expected_report": {
+        "kind": "appraiser_zoning",
+        "property": {
+          "id": "parcel_returned_017",
+          "place_id": "place_example_county",
+          "market_ids": [
+            "market_returned_017"
+          ],
+          "identifiers": {
+            "group_id": "parcel_returned_017",
+            "apn": "000000000001"
+          },
+          "centroid": {
+            "type": "Point",
+            "coordinates": [
+              -80.0,
+              25.0
+            ]
+          },
+          "fields": {
+            "parcel.address": "100 Example Ave",
+            "parcel.apn": "000000000001",
+            "parcel.lot_area": 7500,
+            "parcel.vacant": false,
+            "zoning.code": "SYN-R1"
+          }
+        },
+        "zoning": {
+          "group_id": "parcel_returned_017",
+          "calculation_status": "complete",
+          "id": "synthetic_zoning_017",
+          "updated_at": "2026-10-02T00:00:00Z",
+          "buildings": [
+            {
+              "Id": "synthetic-building",
+              "Envelope": {
+                "PrincipalMaxHeight": 42,
+                "EffectivePFrontSetbackPrincipal": 20
+              }
+            }
+          ]
+        },
+        "provenance": [
+          {
+            "step": "property",
+            "status": "ok",
+            "request_id": "synthetic-lookup-017"
+          },
+          {
+            "step": "zoning",
+            "status": "ok",
+            "request_id": "synthetic-zoning-017"
+          }
+        ],
+        "unknowns": [
+          "zoning description",
+          "development capacity",
+          "permitted uses (retrieve separately when authorized)"
+        ],
+        "professional_boundary": "Factual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.",
+        "markdown": "# Gridics appraisal subject summary\n\nAddress: 100 Example Ave\nParcel: parcel_returned_017\nAPN: 000000000001\nZoning designation: SYN-R1\nRequest IDs: synthetic-lookup-017, synthetic-zoning-017\nUnknown/unavailable: zoning description; development capacity; permitted uses (retrieve separately when authorized)\nFactual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.\n"
+      }
+    },
+    {
+      "name": "parcel",
+      "locator": "parcel_id",
+      "lookup_status": 200,
+      "lookup_response": {
+        "data": {
+          "id": "parcel_returned_017",
+          "place_id": "place_example_county",
+          "market_ids": [
+            "market_returned_017"
+          ],
+          "identifiers": {
+            "group_id": "parcel_returned_017",
+            "apn": "000000000001"
+          },
+          "centroid": {
+            "type": "Point",
+            "coordinates": [
+              -80.0,
+              25.0
+            ]
+          },
+          "fields": {
+            "parcel.address": "100 Example Ave",
+            "parcel.apn": "000000000001",
+            "parcel.lot_area": 7500,
+            "parcel.vacant": false,
+            "zoning.code": "SYN-R1"
+          }
+        },
+        "meta": {
+          "request_id": "synthetic-lookup-017",
+          "restricted_by_entitlement": true
+        }
+      },
+      "zoning_status": 200,
+      "zoning_response": {
+        "data": {
+          "group_id": "parcel_returned_017",
+          "calculation_status": "complete",
+          "id": "synthetic_zoning_017",
+          "updated_at": "2026-10-02T00:00:00Z",
+          "buildings": [
+            {
+              "Id": "synthetic-building",
+              "Envelope": {
+                "PrincipalMaxHeight": 42,
+                "EffectivePFrontSetbackPrincipal": 20
+              }
+            }
+          ]
+        },
+        "meta": {
+          "request_id": "synthetic-zoning-017",
+          "market_id": "market_returned_017",
+          "place_id": "place_example_county"
+        }
+      },
+      "expected_requests": 2,
+      "expected_report": {
+        "kind": "appraiser_zoning",
+        "property": {
+          "id": "parcel_returned_017",
+          "place_id": "place_example_county",
+          "market_ids": [
+            "market_returned_017"
+          ],
+          "identifiers": {
+            "group_id": "parcel_returned_017",
+            "apn": "000000000001"
+          },
+          "centroid": {
+            "type": "Point",
+            "coordinates": [
+              -80.0,
+              25.0
+            ]
+          },
+          "fields": {
+            "parcel.address": "100 Example Ave",
+            "parcel.apn": "000000000001",
+            "parcel.lot_area": 7500,
+            "parcel.vacant": false,
+            "zoning.code": "SYN-R1"
+          }
+        },
+        "zoning": {
+          "group_id": "parcel_returned_017",
+          "calculation_status": "complete",
+          "id": "synthetic_zoning_017",
+          "updated_at": "2026-10-02T00:00:00Z",
+          "buildings": [
+            {
+              "Id": "synthetic-building",
+              "Envelope": {
+                "PrincipalMaxHeight": 42,
+                "EffectivePFrontSetbackPrincipal": 20
+              }
+            }
+          ]
+        },
+        "provenance": [
+          {
+            "step": "property",
+            "status": "ok",
+            "request_id": "synthetic-lookup-017"
+          },
+          {
+            "step": "zoning",
+            "status": "ok",
+            "request_id": "synthetic-zoning-017"
+          }
+        ],
+        "unknowns": [
+          "zoning description",
+          "development capacity",
+          "permitted uses (retrieve separately when authorized)"
+        ],
+        "professional_boundary": "Factual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.",
+        "markdown": "# Gridics appraisal subject summary\n\nAddress: 100 Example Ave\nParcel: parcel_returned_017\nAPN: 000000000001\nZoning designation: SYN-R1\nRequest IDs: synthetic-lookup-017, synthetic-zoning-017\nUnknown/unavailable: zoning description; development capacity; permitted uses (retrieve separately when authorized)\nFactual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.\n"
+      }
+    },
+    {
+      "name": "not_found",
+      "locator": "address",
+      "lookup_status": 404,
+      "lookup_response": {
+        "status": "ERROR",
+        "messages": [
+          "parcel_not_found"
+        ],
+        "meta": {
+          "request_id": "synthetic-lookup-017"
+        }
+      },
+      "zoning_status": null,
+      "zoning_response": null,
+      "expected_requests": 1,
+      "expected_report": {
+        "kind": "appraiser_zoning",
+        "property": null,
+        "zoning": null,
+        "provenance": [
+          {
+            "step": "property",
+            "status": "error",
+            "request_id": "synthetic-lookup-017"
+          }
+        ],
+        "unknowns": [
+          "zoning description",
+          "development capacity",
+          "permitted uses (retrieve separately when authorized)",
+          "address",
+          "APN",
+          "zoning designation",
+          "lot area",
+          "height",
+          "setbacks",
+          "zoning response"
+        ],
+        "professional_boundary": "Factual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.",
+        "markdown": "# Gridics appraisal subject summary\n\nAddress: unknown\nParcel: unknown\nAPN: unknown\nZoning designation: unknown\nRequest IDs: synthetic-lookup-017\nUnknown/unavailable: zoning description; development capacity; permitted uses (retrieve separately when authorized); address; APN; zoning designation; lot area; height; setbacks; zoning response\nFactual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.\n"
+      }
+    },
+    {
+      "name": "ambiguous",
+      "locator": "address",
+      "lookup_status": 409,
+      "lookup_response": {
+        "status": "ERROR",
+        "messages": [
+          "ambiguous_parcel_lookup"
+        ],
+        "meta": {
+          "request_id": "synthetic-lookup-017"
+        }
+      },
+      "zoning_status": null,
+      "zoning_response": null,
+      "expected_requests": 1,
+      "expected_report": {
+        "kind": "appraiser_zoning",
+        "property": null,
+        "zoning": null,
+        "provenance": [
+          {
+            "step": "property",
+            "status": "error",
+            "request_id": "synthetic-lookup-017"
+          }
+        ],
+        "unknowns": [
+          "zoning description",
+          "development capacity",
+          "permitted uses (retrieve separately when authorized)",
+          "address",
+          "APN",
+          "zoning designation",
+          "lot area",
+          "height",
+          "setbacks",
+          "zoning response"
+        ],
+        "professional_boundary": "Factual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.",
+        "markdown": "# Gridics appraisal subject summary\n\nAddress: unknown\nParcel: unknown\nAPN: unknown\nZoning designation: unknown\nRequest IDs: synthetic-lookup-017\nUnknown/unavailable: zoning description; development capacity; permitted uses (retrieve separately when authorized); address; APN; zoning designation; lot area; height; setbacks; zoning response\nFactual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.\n"
+      }
+    },
+    {
+      "name": "wrong_county",
+      "locator": "address",
+      "lookup_status": 404,
+      "lookup_response": {
+        "status": "ERROR",
+        "messages": [
+          "parcel_not_found"
+        ],
+        "meta": {
+          "request_id": "synthetic-lookup-017"
+        }
+      },
+      "zoning_status": null,
+      "zoning_response": null,
+      "expected_requests": 1,
+      "expected_report": {
+        "kind": "appraiser_zoning",
+        "property": null,
+        "zoning": null,
+        "provenance": [
+          {
+            "step": "property",
+            "status": "error",
+            "request_id": "synthetic-lookup-017"
+          }
+        ],
+        "unknowns": [
+          "zoning description",
+          "development capacity",
+          "permitted uses (retrieve separately when authorized)",
+          "address",
+          "APN",
+          "zoning designation",
+          "lot area",
+          "height",
+          "setbacks",
+          "zoning response"
+        ],
+        "professional_boundary": "Factual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.",
+        "markdown": "# Gridics appraisal subject summary\n\nAddress: unknown\nParcel: unknown\nAPN: unknown\nZoning designation: unknown\nRequest IDs: synthetic-lookup-017\nUnknown/unavailable: zoning description; development capacity; permitted uses (retrieve separately when authorized); address; APN; zoning designation; lot area; height; setbacks; zoning response\nFactual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.\n"
+      }
+    },
+    {
+      "name": "zoning_unavailable",
+      "locator": "apn",
+      "lookup_status": 200,
+      "lookup_response": {
+        "data": {
+          "id": "parcel_returned_017",
+          "place_id": "place_example_county",
+          "market_ids": [
+            "market_returned_017"
+          ],
+          "identifiers": {
+            "group_id": "parcel_returned_017",
+            "apn": "000000000001"
+          },
+          "centroid": {
+            "type": "Point",
+            "coordinates": [
+              -80.0,
+              25.0
+            ]
+          },
+          "fields": {
+            "parcel.address": "100 Example Ave",
+            "parcel.apn": "000000000001",
+            "parcel.lot_area": 7500,
+            "parcel.vacant": false,
+            "zoning.code": "SYN-R1"
+          }
+        },
+        "meta": {
+          "request_id": "synthetic-lookup-017",
+          "restricted_by_entitlement": true
+        }
+      },
+      "zoning_status": 403,
+      "zoning_response": {
+        "status": "ERROR",
+        "messages": [
+          "capability_not_included"
+        ],
+        "meta": {
+          "request_id": "synthetic-zoning-017"
+        }
+      },
+      "expected_requests": 2,
+      "expected_report": {
+        "kind": "appraiser_zoning",
+        "property": {
+          "id": "parcel_returned_017",
+          "place_id": "place_example_county",
+          "market_ids": [
+            "market_returned_017"
+          ],
+          "identifiers": {
+            "group_id": "parcel_returned_017",
+            "apn": "000000000001"
+          },
+          "centroid": {
+            "type": "Point",
+            "coordinates": [
+              -80.0,
+              25.0
+            ]
+          },
+          "fields": {
+            "parcel.address": "100 Example Ave",
+            "parcel.apn": "000000000001",
+            "parcel.lot_area": 7500,
+            "parcel.vacant": false,
+            "zoning.code": "SYN-R1"
+          }
+        },
+        "zoning": null,
+        "provenance": [
+          {
+            "step": "property",
+            "status": "ok",
+            "request_id": "synthetic-lookup-017"
+          },
+          {
+            "step": "zoning",
+            "status": "unavailable",
+            "request_id": "synthetic-zoning-017"
+          }
+        ],
+        "unknowns": [
+          "zoning description",
+          "development capacity",
+          "permitted uses (retrieve separately when authorized)",
+          "height",
+          "setbacks",
+          "zoning response"
+        ],
+        "professional_boundary": "Factual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.",
+        "markdown": "# Gridics appraisal subject summary\n\nAddress: 100 Example Ave\nParcel: parcel_returned_017\nAPN: 000000000001\nZoning designation: SYN-R1\nRequest IDs: synthetic-lookup-017, synthetic-zoning-017\nUnknown/unavailable: zoning description; development capacity; permitted uses (retrieve separately when authorized); height; setbacks; zoning response\nFactual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.\n"
+      }
+    },
+    {
+      "name": "partial",
+      "locator": "address",
+      "lookup_status": 200,
+      "lookup_response": {
+        "data": {
+          "id": "parcel_returned_017",
+          "place_id": "place_example_county",
+          "market_ids": [
+            "market_returned_017"
+          ],
+          "identifiers": {
+            "group_id": "parcel_returned_017",
+            "apn": "000000000001"
+          },
+          "centroid": {
+            "type": "Point",
+            "coordinates": [
+              -80.0,
+              25.0
+            ]
+          },
+          "fields": {
+            "parcel.address": "100 Example Ave",
+            "parcel.apn": "000000000001",
+            "parcel.lot_area": null,
+            "parcel.vacant": false,
+            "zoning.code": null
+          }
+        },
+        "meta": {
+          "request_id": "synthetic-lookup-017",
+          "restricted_by_entitlement": true
+        }
+      },
+      "zoning_status": 200,
+      "zoning_response": {
+        "data": {
+          "group_id": "parcel_returned_017",
+          "calculation_status": "complete",
+          "id": "synthetic_zoning_017",
+          "updated_at": "2026-10-02T00:00:00Z",
+          "buildings": [
+            {
+              "Id": "synthetic-building",
+              "Envelope": {
+                "PrincipalMaxHeight": null,
+                "EffectivePFrontSetbackPrincipal": 0
+              }
+            }
+          ]
+        },
+        "meta": {
+          "request_id": "synthetic-zoning-017",
+          "market_id": "market_returned_017",
+          "place_id": "place_example_county"
+        }
+      },
+      "expected_requests": 2,
+      "expected_report": {
+        "kind": "appraiser_zoning",
+        "property": {
+          "id": "parcel_returned_017",
+          "place_id": "place_example_county",
+          "market_ids": [
+            "market_returned_017"
+          ],
+          "identifiers": {
+            "group_id": "parcel_returned_017",
+            "apn": "000000000001"
+          },
+          "centroid": {
+            "type": "Point",
+            "coordinates": [
+              -80.0,
+              25.0
+            ]
+          },
+          "fields": {
+            "parcel.address": "100 Example Ave",
+            "parcel.apn": "000000000001",
+            "parcel.lot_area": null,
+            "parcel.vacant": false,
+            "zoning.code": null
+          }
+        },
+        "zoning": {
+          "group_id": "parcel_returned_017",
+          "calculation_status": "complete",
+          "id": "synthetic_zoning_017",
+          "updated_at": "2026-10-02T00:00:00Z",
+          "buildings": [
+            {
+              "Id": "synthetic-building",
+              "Envelope": {
+                "PrincipalMaxHeight": null,
+                "EffectivePFrontSetbackPrincipal": 0
+              }
+            }
+          ]
+        },
+        "provenance": [
+          {
+            "step": "property",
+            "status": "ok",
+            "request_id": "synthetic-lookup-017"
+          },
+          {
+            "step": "zoning",
+            "status": "ok",
+            "request_id": "synthetic-zoning-017"
+          }
+        ],
+        "unknowns": [
+          "zoning description",
+          "development capacity",
+          "permitted uses (retrieve separately when authorized)",
+          "zoning designation",
+          "lot area",
+          "height"
+        ],
+        "professional_boundary": "Factual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.",
+        "markdown": "# Gridics appraisal subject summary\n\nAddress: 100 Example Ave\nParcel: parcel_returned_017\nAPN: 000000000001\nZoning designation: unknown\nRequest IDs: synthetic-lookup-017, synthetic-zoning-017\nUnknown/unavailable: zoning description; development capacity; permitted uses (retrieve separately when authorized); zoning designation; lot area; height\nFactual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.\n"
+      }
+    },
+    {
+      "name": "quota",
+      "locator": "address",
+      "lookup_status": 429,
+      "lookup_response": {
+        "status": "ERROR",
+        "messages": [
+          "limit_exceeded"
+        ],
+        "meta": {
+          "request_id": "synthetic-lookup-017"
+        }
+      },
+      "zoning_status": null,
+      "zoning_response": null,
+      "expected_requests": 1,
+      "expected_report": {
+        "kind": "appraiser_zoning",
+        "property": null,
+        "zoning": null,
+        "provenance": [
+          {
+            "step": "property",
+            "status": "error",
+            "request_id": "synthetic-lookup-017"
+          }
+        ],
+        "unknowns": [
+          "zoning description",
+          "development capacity",
+          "permitted uses (retrieve separately when authorized)",
+          "address",
+          "APN",
+          "zoning designation",
+          "lot area",
+          "height",
+          "setbacks",
+          "zoning response"
+        ],
+        "professional_boundary": "Factual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.",
+        "markdown": "# Gridics appraisal subject summary\n\nAddress: unknown\nParcel: unknown\nAPN: unknown\nZoning designation: unknown\nRequest IDs: synthetic-lookup-017\nUnknown/unavailable: zoning description; development capacity; permitted uses (retrieve separately when authorized); address; APN; zoning designation; lot area; height; setbacks; zoning response\nFactual Gridics data summary; not a formal appraisal, title opinion, legal advice, binding zoning determination or permit assurance.\n"
+      }
+    }
+  ]
+}

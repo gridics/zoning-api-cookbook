@@ -1,0 +1,82 @@
+{
+  "cases": [
+    [
+      "address",
+      "100 Example Ave",
+      "suggest_retrieve",
+      200
+    ],
+    [
+      "apn",
+      "000000000001",
+      "suggest_retrieve",
+      200
+    ],
+    [
+      "forward",
+      "100 Example Ave",
+      "forward",
+      200
+    ],
+    [
+      "empty",
+      "empty match",
+      "suggest_retrieve",
+      200
+    ],
+    [
+      "malformed",
+      "bad query",
+      "suggest_retrieve",
+      422
+    ],
+    [
+      "session",
+      "bad session",
+      "suggest_retrieve",
+      409
+    ],
+    [
+      "capability",
+      "denied plan",
+      "suggest_retrieve",
+      403
+    ],
+    [
+      "coverage",
+      "denied coverage",
+      "suggest_retrieve",
+      403
+    ],
+    [
+      "quota",
+      "quota limit",
+      "suggest_retrieve",
+      429
+    ],
+    [
+      "rate",
+      "rate limit",
+      "suggest_retrieve",
+      429
+    ],
+    [
+      "service",
+      "service unavailable",
+      "suggest_retrieve",
+      503
+    ],
+    [
+      "tampered",
+      "stale result",
+      "suggest_retrieve",
+      409
+    ],
+    [
+      "ambiguous",
+      "ambiguous address",
+      "forward",
+      200
+    ]
+  ]
+}

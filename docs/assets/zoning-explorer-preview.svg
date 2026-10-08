@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+<title id="title">Gridics Zoning Explorer preview</title>
+<desc id="desc">Illustrative interface with property search, parcel facts, zoning district, setbacks, height and development-capacity panels.</desc>
+<rect width="1200" height="680" rx="28" fill="#f4f7fa"/>
+<rect x="38" y="38" width="1124" height="604" rx="22" fill="#ffffff" stroke="#dce5ec"/>
+<text x="78" y="96" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#17324a">Gridics Zoning Explorer</text>
+<text x="78" y="130" font-family="Arial, sans-serif" font-size="16" fill="#52687a">Resolve a property, then inspect parcel-specific zoning and development facts.</text>
+<rect x="78" y="160" width="1044" height="58" rx="12" fill="#f7fafc" stroke="#9cafbd"/>
+<text x="100" y="196" font-family="Arial, sans-serif" font-size="18" fill="#314c61">100 Example Ave</text>
+<rect x="965" y="169" width="145" height="40" rx="9" fill="#153f63"/>
+<text x="1003" y="195" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#ffffff">Search</text>
+<rect x="78" y="250" width="330" height="340" rx="16" fill="#f8fafc" stroke="#dce5ec"/>
+<text x="102" y="290" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#17324a">Property</text>
+<text x="102" y="330" font-family="Arial, sans-serif" font-size="13" fill="#6c7e8b">ADDRESS</text>
+<text x="102" y="354" font-family="Arial, sans-serif" font-size="17" fill="#17324a">100 Example Ave</text>
+<text x="102" y="394" font-family="Arial, sans-serif" font-size="13" fill="#6c7e8b">APN</text>
+<text x="102" y="418" font-family="Arial, sans-serif" font-size="17" fill="#17324a">000000000001</text>
+<text x="102" y="458" font-family="Arial, sans-serif" font-size="13" fill="#6c7e8b">LOT AREA</text>
+<text x="102" y="482" font-family="Arial, sans-serif" font-size="17" fill="#17324a">7,500 sq ft</text>
+<text x="102" y="522" font-family="Arial, sans-serif" font-size="13" fill="#6c7e8b">PARCEL STATUS</text>
+<text x="102" y="546" font-family="Arial, sans-serif" font-size="17" fill="#17324a">Resolved</text>
+<rect x="438" y="250" width="684" height="160" rx="16" fill="#f8fafc" stroke="#dce5ec"/>
+<text x="466" y="290" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#17324a">Zoning</text>
+<text x="466" y="330" font-family="Arial, sans-serif" font-size="13" fill="#6c7e8b">DISTRICT</text>
+<text x="466" y="356" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#153f63">R-4</text>
+<text x="610" y="330" font-family="Arial, sans-serif" font-size="13" fill="#6c7e8b">USES</text>
+<text x="610" y="356" font-family="Arial, sans-serif" font-size="17" fill="#17324a">Returned by zoning response</text>
+<rect x="438" y="432" width="326" height="158" rx="16" fill="#f8fafc" stroke="#dce5ec"/>
+<text x="466" y="470" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#17324a">Development rules</text>
+<text x="466" y="510" font-family="Arial, sans-serif" font-size="14" fill="#52687a">Setbacks · height · density · FAR</text>
+<text x="466" y="544" font-family="Arial, sans-serif" font-size="14" fill="#52687a">Display only fields returned for this parcel.</text>
+<rect x="786" y="432" width="336" height="158" rx="16" fill="#f8fafc" stroke="#dce5ec"/>
+<text x="814" y="470" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#17324a">Development capacity</text>
+<text x="814" y="510" font-family="Arial, sans-serif" font-size="14" fill="#52687a">Capability-aware</text>
+<text x="814" y="544" font-family="Arial, sans-serif" font-size="14" fill="#52687a">Unavailable stays unavailable—never invented.</text>
+</svg>

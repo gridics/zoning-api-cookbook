@@ -1,0 +1,13 @@
+## Location Search configuration
+
+These seven ports run on a server using `x-api-key: ${GRIDICS_API_KEY}` with a secret `gk_...` key. Never embed that key in browser JavaScript. Use scoped observable `gpk_...` publishable tokens for the [plain browser](../examples/browser-location-autocomplete/) or [React example](../examples/react-location-search/).
+
+Set `GRIDICS_LOCATION_QUERY` to an address or APN (keep leading zeros). `GRIDICS_LOCATION_MODE=suggest_retrieve` runs two bounded suggest calls and retrieves the first returned opaque `gridics_id`; `forward` runs one complete one-off query. Set `GRIDICS_LOCATION_LIMIT` (1–10), `GRIDICS_LOCATION_COUNTRY`, `GRIDICS_LOCATION_LANGUAGE`, `GRIDICS_LOCATION_PROXIMITY=longitude,latitude`, or `GRIDICS_LOCATION_BBOX=minLon,minLat,maxLon,maxLat`. Hints narrow/rank results within your entitled geography. They never grant access. No `place_id` is required.
+
+Each interactive execution generates a fresh UUIDv4. Both suggests and the selected retrieve use the same UUID. A new independent interaction requires a new token; retrieve closes the previous session. The session token is correlation, never authentication. Empty suggestions skip retrieve. One session uses one `location_searches` commercial unit; forward uses one unit per successful request. Each HTTP request still counts toward rate limits. The recipe sends each request once and never automatically retries an uncertain paid operation.
+
+The `workflow` envelope preserves public suggestions (`name`, `full_address`, `place_formatted`, `matched_by`, `feature_type`, `context`) and GeoJSON `features` with canonical `parcel_id`, string APN, address, point coordinates, and county/region context. `state` distinguishes `resolved`, `ambiguous`, `no_match`, and `error`; multiple forward features preserve ambiguity for caller review. Request IDs/status are in `provenance`.
+
+HTTP 422 means malformed input; 400/409 can mean invalid/expired/mismatched session or stale selection; 403 can indicate capability/coverage denial; 429 covers quota or rate controls; 502/503 indicate temporary service failure. Inspect the public response code and correlation ID; start a new interaction when its session expires. Never log keys or expose provider details.
+
+Run `python3 tests/run_location_parity.py --language python` (or nodejs, typescript, php, csharp, java, go) for deterministic address/APN/forward/filter/empty/session/quota/error parity. This is fixture evidence, not hosted or billable acceptance. Check the [compatibility notes](compatibility.md) and [public contract](../contracts/openapi-v2.json) before enabling live calls.

@@ -1,0 +1,200 @@
+name: Cookbook CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+
+  classify:
+    name: Classify changes
+    runs-on: ubuntu-latest
+    outputs:
+      full: ${{ steps.changed.outputs.full }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Choose documentation-only or full verification
+        id: changed
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PUSH_BASE_SHA: ${{ github.event.before }}
+          PUSH_HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            base="$PR_BASE_SHA"
+            head="$PR_HEAD_SHA"
+          else
+            base="$PUSH_BASE_SHA"
+            head="$PUSH_HEAD_SHA"
+          fi
+          full=true
+          if [[ -n "$base" && -n "$head" ]] &&
+            git cat-file -e "$base^{commit}" 2>/dev/null &&
+            git cat-file -e "$head^{commit}" 2>/dev/null; then
+            changed="$(git diff --name-only "$base" "$head")"
+            if [[ -n "$changed" ]] && ! printf '%s\n' "$changed" | grep -Ev '\.md$' | grep -q .; then
+              full=false
+            fi
+          fi
+          echo "full=$full" >> "$GITHUB_OUTPUT"
+          echo "Full validation required: $full"
+
+  public-safety:
+    name: Public distribution safety
+    needs: classify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: python3 tests/validate_repository.py
+      - run: python3 tests/validate_public_distribution.py
+      - name: Scan public tree with Gitleaks
+        run: >-
+          docker run --rm -v "$PWD:/repo"
+          ghcr.io/gitleaks/gitleaks:v8.30.1@sha256:b109bc5f8f76a38196a3e413704fc5b9e3c32360bce4e4b603bd6f45b3721dbb
+          detect --source=/repo --no-git --redact --exit-code=1
+
+  repository-contract:
+    needs: classify
+    if: needs.classify.outputs.full == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.23"
+          cache: true
+      - run: npm ci
+      - run: npm run build
+      - run: node --test tests/location_browser.test.mjs
+      - run: python3 tests/validate_contract.py
+      - run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - run: python3 -m py_compile languages/python/gridics_cookbook.py tests/*.py tools/*.py
+      - run: go test ./...
+      - name: Confirm generated files are current
+        run: |
+          python3 tools/scaffold_cookbook.py
+          git diff --exit-code
+
+  language-smoke:
+    needs: classify
+    if: needs.classify.outputs.full == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [python, nodejs, typescript, php, csharp, java, go]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v7
+        if: matrix.language == 'nodejs' || matrix.language == 'typescript'
+        with:
+          node-version: "22"
+          cache: npm
+      - uses: shivammathur/setup-php@v2
+        if: matrix.language == 'php'
+        with:
+          php-version: "8.3"
+      - uses: actions/setup-dotnet@v6
+        if: matrix.language == 'csharp'
+        with:
+          dotnet-version: "8.0.x"
+      - uses: actions/setup-java@v6
+        if: matrix.language == 'java'
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: actions/setup-go@v7
+        if: matrix.language == 'go'
+        with:
+          go-version: "1.23"
+          cache: true
+      - name: Build TypeScript
+        if: matrix.language == 'typescript'
+        run: npm ci && npm run build
+      - run: python3 tests/run_fixture_smoke.py --language ${{ matrix.language }}
+      - run: python3 tests/run_mcp_conformance.py --language ${{ matrix.language }}
+      - run: python3 tests/run_appraiser_parity.py --language ${{ matrix.language }}
+      - run: python3 tests/run_location_parity.py --language ${{ matrix.language }}
+
+  react-examples:
+    needs: classify
+    if: needs.classify.outputs.full == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - run: npm ci
+        working-directory: examples/react-location-search
+      - run: npm run build && npm test
+        working-directory: examples/react-location-search
+      - run: npm ci
+        working-directory: examples/react-zoning-explorer
+      - run: npm run build && npm test
+        working-directory: examples/react-zoning-explorer
+
+  dry-run-no-secret:
+    needs: classify
+    if: needs.classify.outputs.full == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Every recipe plans safely without a credential
+        env:
+          GRIDICS_DRY_RUN: "1"
+        run: |
+          for entry in recipes/*/python/main.py; do python3 "$entry" >/dev/null; done
+
+  complete:
+    name: Cookbook CI complete
+    needs: [classify, public-safety, repository-contract, language-smoke, react-examples, dry-run-no-secret]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce selected test gates
+        env:
+          CLASSIFY_RESULT: ${{ needs.classify.result }}
+          PUBLIC_SAFETY_RESULT: ${{ needs.public-safety.result }}
+          FULL: ${{ needs.classify.outputs.full }}
+          REPOSITORY_RESULT: ${{ needs.repository-contract.result }}
+          LANGUAGE_RESULT: ${{ needs.language-smoke.result }}
+          REACT_RESULT: ${{ needs.react-examples.result }}
+          DRY_RUN_RESULT: ${{ needs.dry-run-no-secret.result }}
+        run: |
+          set -euo pipefail
+          [[ "$CLASSIFY_RESULT" == "success" ]]
+          [[ "$PUBLIC_SAFETY_RESULT" == "success" ]]
+          if [[ "$FULL" == "true" ]]; then
+            [[ "$REPOSITORY_RESULT" == "success" ]]
+            [[ "$LANGUAGE_RESULT" == "success" ]]
+            [[ "$REACT_RESULT" == "success" ]]
+            [[ "$DRY_RUN_RESULT" == "success" ]]
+          fi
+          echo "Selected cookbook validation gates passed."

@@ -1,0 +1,3 @@
+row_id,place_id,address,postal_code,apn
+portfolio-001,place_example_county,100 Example Ave,00000,
+portfolio-002,place_example_county,,,000000000001

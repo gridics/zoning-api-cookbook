@@ -1,0 +1,65 @@
+name: Bug report
+description: Report a reproducible problem with a public cookbook recipe or example.
+title: "[Bug] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Never include API keys, tokens, customer data, private URLs, or confidential Gridics information.
+  - type: input
+    id: recipe
+    attributes:
+      label: Recipe or example
+      description: For example, recipes/04-zoning-query or examples/react-zoning-explorer.
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language/runtime
+      options:
+        - Python
+        - Node.js JavaScript
+        - TypeScript
+        - PHP
+        - C#/.NET
+        - Java
+        - Go
+        - cURL
+        - Browser / React
+        - Documentation only
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Execution mode
+      options:
+        - Synthetic fixture
+        - Dry run
+        - Live Public API
+        - Not applicable
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Use synthetic or redacted values only.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Redact request IDs or response content if they could expose protected information.
+    validations:
+      required: true

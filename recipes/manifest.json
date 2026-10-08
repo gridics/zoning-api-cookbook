@@ -1,0 +1,724 @@
+{
+  "schema_version": 1,
+  "api": {
+    "version": "v2",
+    "default_base_url": "https://api.gridics.com",
+    "authentication_header": "x-api-key",
+    "contract_source": "contracts/openapi-v2.json",
+    "reviewed_on": "2026-10-05"
+  },
+  "defaults": {
+    "GRIDICS_MARKET_ID": "market_example",
+    "GRIDICS_PLACE_ID": "place_example_county",
+    "GRIDICS_PARCEL_ID": "parcel_example_001",
+    "GRIDICS_APN": "000000000001",
+    "GRIDICS_ADDRESS": "100 Example Ave",
+    "GRIDICS_POSTAL_CODE": "00000",
+    "GRIDICS_LOCATION_QUERY": "100 Example Ave",
+    "GRIDICS_LOCATION_MODE": "suggest_retrieve",
+    "GRIDICS_LOCATION_LIMIT": "5",
+    "GRIDICS_LOCATION_COUNTRY": "US",
+    "GRIDICS_LOCATION_LANGUAGE": "en",
+    "GRIDICS_LOCATION_PROXIMITY": "",
+    "GRIDICS_LOCATION_BBOX": ""
+  },
+  "recipes": [
+    {
+      "id": "01",
+      "slug": "hello-world",
+      "title": "Hello world: verify an API key",
+      "level": "beginner",
+      "outcome": "Confirm that a newly issued key works and inspect its effective API context.",
+      "usage": "One non-billable credential verification request; authentication and edge limits still apply.",
+      "endpoints": [
+        "GET /v2/me"
+      ],
+      "steps": [
+        {
+          "name": "credential",
+          "method": "GET",
+          "path": "/v2/me"
+        }
+      ]
+    },
+    {
+      "id": "02",
+      "slug": "discover-counties",
+      "title": "Discover coverage and entitled counties",
+      "level": "beginner",
+      "outcome": "List coverage separately from the counties the current key may query.",
+      "usage": "At most three discovery requests per run.",
+      "endpoints": [
+        "GET /v2/market-catalog",
+        "GET /v2/markets",
+        "GET /v2/markets/{market_id}/places"
+      ],
+      "steps": [
+        {
+          "name": "coverage",
+          "method": "GET",
+          "path": "/v2/market-catalog",
+          "query": {
+            "page_size": "25"
+          }
+        },
+        {
+          "name": "markets",
+          "method": "GET",
+          "path": "/v2/markets",
+          "query": {
+            "page_size": "25"
+          }
+        },
+        {
+          "name": "counties",
+          "method": "GET",
+          "path": "/v2/markets/${GRIDICS_MARKET_ID}/places",
+          "query": {
+            "page_size": "25"
+          }
+        }
+      ]
+    },
+    {
+      "id": "03",
+      "slug": "property-lookup",
+      "title": "Look up a property",
+      "level": "beginner",
+      "outcome": "Resolve one property by address, APN, parcel ID, or coordinates inside an entitled county.",
+      "usage": "One standard request plus the returned parcel row.",
+      "endpoints": [
+        "POST /v2/parcels/lookup"
+      ],
+      "steps": [
+        {
+          "name": "property",
+          "method": "POST",
+          "path": "/v2/parcels/lookup",
+          "body": {
+            "place_id": "${GRIDICS_PLACE_ID}",
+            "address": {
+              "street": "${GRIDICS_ADDRESS}",
+              "postal_code": "${GRIDICS_POSTAL_CODE}"
+            },
+            "fields": [
+              "parcel.id",
+              "parcel.apn",
+              "parcel.address",
+              "parcel.lot_area",
+              "parcel.vacant",
+              "zoning.code"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "04",
+      "slug": "zoning-query",
+      "title": "Retrieve zoning for a known property",
+      "level": "beginner",
+      "outcome": "Retrieve the current public zoning response for a parcel already resolved by Gridics.",
+      "usage": "One zoning-query unit when successful.",
+      "endpoints": [
+        "POST /v2/zoning/query"
+      ],
+      "steps": [
+        {
+          "name": "zoning",
+          "method": "POST",
+          "path": "/v2/zoning/query",
+          "body": {
+            "market_id": "${GRIDICS_MARKET_ID}",
+            "place_id": "${GRIDICS_PLACE_ID}",
+            "group_id": "${GRIDICS_PARCEL_ID}"
+          }
+        }
+      ]
+    },
+    {
+      "id": "05",
+      "slug": "simple-search",
+      "title": "Search a county with simple filters",
+      "level": "beginner",
+      "outcome": "Find a small list of vacant parcels; add other constraints only when field discovery confirms filter availability.",
+      "usage": "One standard request plus returned parcel rows; defaults to 10 rows.",
+      "endpoints": [
+        "POST /v2/parcels/simple-search"
+      ],
+      "steps": [
+        {
+          "name": "candidates",
+          "method": "POST",
+          "path": "/v2/parcels/simple-search",
+          "body": {
+            "place_ids": [
+              "${GRIDICS_PLACE_ID}"
+            ],
+            "filters": {
+              "vacant": true
+            },
+            "page_size": 10,
+            "fields": [
+              "parcel.id",
+              "parcel.apn",
+              "parcel.address",
+              "parcel.lot_area",
+              "parcel.vacant",
+              "zoning.code"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "06",
+      "slug": "paginate-export",
+      "title": "Paginate and export results",
+      "level": "intermediate",
+      "outcome": "Follow opaque cursors safely and create a bounded JSON export suitable for CSV conversion.",
+      "usage": "Stops after three pages or 100 rows, whichever comes first.",
+      "endpoints": [
+        "POST /v2/parcels/simple-search"
+      ],
+      "steps": [
+        {
+          "name": "page_1",
+          "method": "POST",
+          "path": "/v2/parcels/simple-search",
+          "body": {
+            "place_ids": [
+              "${GRIDICS_PLACE_ID}"
+            ],
+            "filters": {
+              "vacant": true
+            },
+            "page_size": 10,
+            "fields": [
+              "parcel.id",
+              "parcel.apn",
+              "parcel.address",
+              "parcel.lot_area",
+              "parcel.vacant",
+              "zoning.code"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "07",
+      "slug": "errors-retries",
+      "title": "Handle errors, throttling, and retries",
+      "level": "intermediate",
+      "outcome": "Classify authentication, entitlement, validation, throttling, and transient service errors.",
+      "usage": "At most three attempts and 30 seconds; only 429, 502, and 503 are retryable.",
+      "endpoints": [
+        "GET /v2/me"
+      ],
+      "steps": [
+        {
+          "name": "retry_demo",
+          "method": "GET",
+          "path": "/v2/me"
+        }
+      ]
+    },
+    {
+      "id": "08",
+      "slug": "advanced-search",
+      "title": "Build an advanced parcel search",
+      "level": "intermediate",
+      "outcome": "Discover released fields before submitting a typed, projected search; add sorting only where released.",
+      "usage": "One field-discovery request and one advanced search; defaults to 10 rows.",
+      "endpoints": [
+        "GET /v2/parcels/search-fields",
+        "POST /v2/parcels/search"
+      ],
+      "steps": [
+        {
+          "name": "fields",
+          "method": "GET",
+          "path": "/v2/parcels/search-fields"
+        },
+        {
+          "name": "candidates",
+          "method": "POST",
+          "path": "/v2/parcels/search",
+          "body": {
+            "scope": {
+              "place_ids": [
+                "${GRIDICS_PLACE_ID}"
+              ]
+            },
+            "filters": {
+              "all": [
+                {
+                  "field": "parcel.vacant",
+                  "operator": "eq",
+                  "value": true
+                }
+              ]
+            },
+            "fields": [
+              "parcel.id",
+              "parcel.address",
+              "parcel.lot_area",
+              "zoning.code"
+            ],
+            "sort": [],
+            "include_total": false,
+            "page_size": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": "09",
+      "slug": "polygon-search",
+      "title": "Search within a GeoJSON polygon",
+      "level": "intermediate",
+      "outcome": "Search an explicitly entitled county within a small customer-supplied study polygon.",
+      "usage": "One advanced search and at most 10 rows.",
+      "endpoints": [
+        "POST /v2/parcels/search"
+      ],
+      "steps": [
+        {
+          "name": "candidates",
+          "method": "POST",
+          "path": "/v2/parcels/search",
+          "body": {
+            "scope": {
+              "place_ids": [
+                "${GRIDICS_PLACE_ID}"
+              ]
+            },
+            "filters": {
+              "all": [
+                {
+                  "field": "parcel.vacant",
+                  "operator": "eq",
+                  "value": true
+                }
+              ]
+            },
+            "fields": [
+              "parcel.id",
+              "parcel.address",
+              "parcel.lot_area",
+              "zoning.code"
+            ],
+            "sort": [],
+            "include_total": false,
+            "page_size": 10,
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  [
+                    -80.2,
+                    25.75
+                  ],
+                  [
+                    -80.19,
+                    25.75
+                  ],
+                  [
+                    -80.19,
+                    25.76
+                  ],
+                  [
+                    -80.2,
+                    25.76
+                  ],
+                  [
+                    -80.2,
+                    25.75
+                  ]
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "slug": "portfolio-enrichment",
+      "title": "Enrich a property portfolio",
+      "level": "business",
+      "outcome": "Resolve the synthetic portfolio inputs and preserve a row-level success or error result.",
+      "usage": "The sample contains two rows; production use must set an explicit row and request budget.",
+      "endpoints": [
+        "POST /v2/parcels/lookup"
+      ],
+      "steps": [
+        {
+          "name": "portfolio_row_1",
+          "method": "POST",
+          "path": "/v2/parcels/lookup",
+          "body": {
+            "place_id": "${GRIDICS_PLACE_ID}",
+            "address": {
+              "street": "${GRIDICS_ADDRESS}",
+              "postal_code": "${GRIDICS_POSTAL_CODE}"
+            },
+            "fields": [
+              "parcel.id",
+              "parcel.apn",
+              "parcel.address",
+              "parcel.lot_area",
+              "parcel.vacant",
+              "zoning.code"
+            ]
+          }
+        },
+        {
+          "name": "portfolio_row_2",
+          "method": "POST",
+          "path": "/v2/parcels/lookup",
+          "body": {
+            "place_id": "${GRIDICS_PLACE_ID}",
+            "address": null,
+            "fields": [
+              "parcel.id",
+              "parcel.apn",
+              "parcel.address",
+              "parcel.lot_area",
+              "parcel.vacant",
+              "zoning.code"
+            ],
+            "apn": "${GRIDICS_APN}"
+          }
+        }
+      ]
+    },
+    {
+      "id": "11",
+      "slug": "redevelopment-screen",
+      "title": "Screen redevelopment candidates",
+      "level": "business / capability-gated",
+      "outcome": "Check whether capacity fields are released before screening for potential underbuilt parcels.",
+      "usage": "No live capacity claim is made when fields remain unavailable or capability-gated.",
+      "endpoints": [
+        "GET /v2/parcels/search-fields",
+        "POST /v2/parcels/search"
+      ],
+      "steps": [
+        {
+          "name": "fields_gate",
+          "method": "GET",
+          "path": "/v2/parcels/search-fields"
+        },
+        {
+          "name": "candidates",
+          "method": "POST",
+          "path": "/v2/parcels/search",
+          "body": {
+            "scope": {
+              "place_ids": [
+                "${GRIDICS_PLACE_ID}"
+              ]
+            },
+            "filters": {
+              "all": [
+                {
+                  "field": "parcel.vacant",
+                  "operator": "eq",
+                  "value": true
+                }
+              ]
+            },
+            "fields": [
+              "parcel.id",
+              "parcel.address",
+              "parcel.lot_area",
+              "zoning.code",
+              "development.max_buildable_area"
+            ],
+            "sort": [],
+            "include_total": false,
+            "page_size": 10
+          },
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "12",
+      "slug": "retail-shortlist",
+      "title": "Shortlist franchise or retail sites",
+      "level": "business",
+      "outcome": "Apply supported parcel constraints and produce an explainable, bounded candidate set.",
+      "usage": "At most 20 candidates; local preferences do not imply demographics, traffic, rent, or competitors.",
+      "endpoints": [
+        "GET /v2/parcels/search-fields",
+        "POST /v2/parcels/search"
+      ],
+      "steps": [
+        {
+          "name": "fields",
+          "method": "GET",
+          "path": "/v2/parcels/search-fields"
+        },
+        {
+          "name": "candidates",
+          "method": "POST",
+          "path": "/v2/parcels/search",
+          "body": {
+            "scope": {
+              "place_ids": [
+                "${GRIDICS_PLACE_ID}"
+              ]
+            },
+            "filters": {
+              "all": [
+                {
+                  "field": "parcel.vacant",
+                  "operator": "eq",
+                  "value": true
+                }
+              ]
+            },
+            "fields": [
+              "parcel.id",
+              "parcel.address",
+              "parcel.lot_area",
+              "zoning.code"
+            ],
+            "sort": [],
+            "include_total": false,
+            "page_size": 10
+          }
+        }
+      ]
+    },
+    {
+      "id": "13",
+      "slug": "property-factsheet",
+      "title": "Generate a brokerage property factsheet",
+      "level": "business",
+      "outcome": "Collect public parcel and zoning facts with request provenance for a printable report.",
+      "usage": "One lookup and one optional zoning request.",
+      "endpoints": [
+        "POST /v2/parcels/lookup",
+        "POST /v2/zoning/query"
+      ],
+      "steps": [
+        {
+          "name": "property",
+          "method": "POST",
+          "path": "/v2/parcels/lookup",
+          "body": {
+            "place_id": "${GRIDICS_PLACE_ID}",
+            "address": {
+              "street": "${GRIDICS_ADDRESS}",
+              "postal_code": "${GRIDICS_POSTAL_CODE}"
+            },
+            "fields": [
+              "parcel.id",
+              "parcel.apn",
+              "parcel.address",
+              "parcel.lot_area",
+              "parcel.vacant",
+              "zoning.code"
+            ]
+          }
+        },
+        {
+          "name": "zoning",
+          "method": "POST",
+          "path": "/v2/zoning/query",
+          "body": {
+            "market_id": "${GRIDICS_MARKET_ID}",
+            "place_id": "${GRIDICS_PLACE_ID}",
+            "group_id": "${GRIDICS_PARCEL_ID}"
+          },
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "14",
+      "slug": "snapshot-diff",
+      "title": "Detect changes between property snapshots",
+      "level": "business",
+      "outcome": "Capture a bounded current snapshot for comparison with a customer-managed prior snapshot.",
+      "usage": "Observed response changes are not an ordinance event feed or historical zoning service.",
+      "endpoints": [
+        "POST /v2/parcels/lookup"
+      ],
+      "steps": [
+        {
+          "name": "current_snapshot",
+          "method": "POST",
+          "path": "/v2/parcels/lookup",
+          "body": {
+            "place_id": "${GRIDICS_PLACE_ID}",
+            "address": {
+              "street": "${GRIDICS_ADDRESS}",
+              "postal_code": "${GRIDICS_POSTAL_CODE}"
+            },
+            "fields": [
+              "parcel.id",
+              "parcel.apn",
+              "parcel.address",
+              "parcel.lot_area",
+              "parcel.vacant",
+              "zoning.code"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "15",
+      "slug": "due-diligence",
+      "title": "Build a due-diligence screening report",
+      "level": "business",
+      "outcome": "Gather facts for customer-defined screening rules while preserving unknown values for review.",
+      "usage": "Missing data produces needs_review; this is not a legal determination, appraisal, or credit decision.",
+      "endpoints": [
+        "POST /v2/parcels/lookup",
+        "POST /v2/zoning/query"
+      ],
+      "steps": [
+        {
+          "name": "property",
+          "method": "POST",
+          "path": "/v2/parcels/lookup",
+          "body": {
+            "place_id": "${GRIDICS_PLACE_ID}",
+            "address": {
+              "street": "${GRIDICS_ADDRESS}",
+              "postal_code": "${GRIDICS_POSTAL_CODE}"
+            },
+            "fields": [
+              "parcel.id",
+              "parcel.apn",
+              "parcel.address",
+              "parcel.lot_area",
+              "parcel.vacant",
+              "zoning.code"
+            ]
+          }
+        },
+        {
+          "name": "zoning",
+          "method": "POST",
+          "path": "/v2/zoning/query",
+          "body": {
+            "market_id": "${GRIDICS_MARKET_ID}",
+            "place_id": "${GRIDICS_PLACE_ID}",
+            "group_id": "${GRIDICS_PARCEL_ID}"
+          },
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "16",
+      "slug": "mcp-tools",
+      "title": "Expose bounded MCP tools",
+      "level": "advanced",
+      "outcome": "Run a read-only MCP-compatible JSON-RPC server with typed, allow-listed Gridics tools.",
+      "usage": "Five Gridics calls per workflow, 10 search results, and two zoning enrichments by default.",
+      "endpoints": [
+        "GET /v2/me",
+        "GET /v2/markets",
+        "POST /v2/parcels/lookup",
+        "POST /v2/parcels/simple-search",
+        "POST /v2/zoning/query"
+      ],
+      "steps": [
+        {
+          "name": "credential",
+          "method": "GET",
+          "path": "/v2/me"
+        }
+      ]
+    },
+    {
+      "id": "17",
+      "slug": "appraiser-zoning-lookup",
+      "title": "Appraiser zoning lookup",
+      "level": "business",
+      "outcome": "Resolve an appraisal subject by address/APN and report factual zoning with provenance and explicit unknowns.",
+      "usage": "One lookup and one optional zoning operation; no uncertain paid retry.",
+      "endpoints": [
+        "POST /v2/parcels/lookup",
+        "POST /v2/zoning/query"
+      ],
+      "steps": [
+        {
+          "name": "property",
+          "method": "POST",
+          "path": "/v2/parcels/lookup",
+          "body": {
+            "place_id": "${GRIDICS_PLACE_ID}",
+            "address": {
+              "street": "${GRIDICS_ADDRESS}",
+              "postal_code": "${GRIDICS_POSTAL_CODE}"
+            },
+            "fields": [
+              "parcel.id",
+              "parcel.apn",
+              "parcel.address",
+              "parcel.lot_area",
+              "parcel.vacant",
+              "zoning.code"
+            ]
+          }
+        },
+        {
+          "name": "zoning",
+          "method": "POST",
+          "path": "/v2/zoning/query",
+          "body": {
+            "market_id": "${GRIDICS_MARKET_ID}",
+            "place_id": "${GRIDICS_PLACE_ID}",
+            "group_id": "${GRIDICS_PARCEL_ID}"
+          },
+          "optional": true
+        }
+      ],
+      "verification": "fixture-tested; live production verification tracked separately",
+      "persona": "Appraiser/property professional",
+      "required_capabilities": [
+        "parcel_search",
+        "zoning_query (optional)"
+      ]
+    },
+    {
+      "id": "18",
+      "slug": "location-search",
+      "title": "Location Search API",
+      "level": "beginner",
+      "outcome": "Resolve free-form address/APN with suggest/retrieve or forward without a required county ID.",
+      "usage": "One commercial unit per interactive session or forward request; HTTP rate limits count each request.",
+      "endpoints": [
+        "GET /v2/locations/suggest",
+        "GET /v2/locations/retrieve/{gridics_id}",
+        "GET /v2/locations/forward"
+      ],
+      "steps": [
+        {
+          "name": "suggest_1",
+          "method": "GET",
+          "path": "/v2/locations/suggest"
+        },
+        {
+          "name": "suggest_2",
+          "method": "GET",
+          "path": "/v2/locations/suggest"
+        },
+        {
+          "name": "retrieve",
+          "method": "GET",
+          "path": "/v2/locations/retrieve/{gridics_id}"
+        }
+      ]
+    }
+  ]
+}

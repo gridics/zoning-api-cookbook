@@ -1,0 +1,9 @@
+{
+  "captured_at": "2026-01-01T00:00:00Z",
+  "parcel": {
+    "id": "parcel_example_001",
+    "address": "100 Example Ave",
+    "zoning_code": "EX-1",
+    "lot_area_sqft": 7500
+  }
+}

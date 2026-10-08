@@ -1,0 +1,48 @@
+name: Recipe or integration request
+description: Suggest a public zoning/property workflow that would help developers build with Gridics.
+title: "[Recipe] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the developer problem, not internal Gridics implementation. Requests must be achievable using intentionally public interfaces and data.
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Developer/business outcome
+      description: What should a developer be able to build or answer?
+    validations:
+      required: true
+  - type: textarea
+    id: inputs
+    attributes:
+      label: Inputs
+      description: Address, APN, parcel ID, polygon, portfolio, zoning question, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Desired output
+      description: What should the example return or render?
+    validations:
+      required: true
+  - type: textarea
+    id: public_api
+    attributes:
+      label: Relevant public API capability
+      description: Optional. Link public documentation or name public endpoints/capabilities if known.
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Preferred example surface
+      options:
+        - Seven server languages
+        - cURL
+        - React / browser
+        - MCP / AI agent
+        - Documentation / architecture guide
+        - No preference
+    validations:
+      required: true

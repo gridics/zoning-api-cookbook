@@ -1,0 +1,14 @@
+import { createClient, SearchInteraction } from './client.mjs';
+// Copy config.example.mjs to config.mjs to opt into live calls.
+const config = await import('./config.mjs').then(m => m.default).catch(() => ({ fixture: true }));
+const input = document.querySelector('#search'), list = document.querySelector('#results'), output = document.querySelector('#property');
+const requests = []; let client; try { client = createClient({ ...config, onRequest(item) { requests.push(item); document.querySelector('#requests').textContent = JSON.stringify(requests.slice(-10), null, 2); } }); } catch (error) { document.querySelector('#status').textContent = error.message; input.disabled = true; }
+if (!config.fixture) document.querySelector('#mode').textContent = 'Live publishable-token mode · quota applies';
+const interaction = new SearchInteraction(client, ({ rows, active, status, resolved }) => {
+  if (rows) { list.replaceChildren(); input.setAttribute('aria-expanded', String(rows.length > 0)); input.removeAttribute('aria-activedescendant'); rows.forEach((row, index) => { const item = document.createElement('li'); item.id = `suggestion-${index}`; item.setAttribute('role', 'option'); item.setAttribute('aria-selected', 'false'); const primary = document.createElement('strong'), secondary = document.createElement('span'); primary.textContent = row.name; secondary.textContent = `${row.place_formatted} · ${row.context?.county?.name ?? ''}${row.matched_by === 'apn' ? ' · APN match' : ''}`; item.append(primary, secondary); item.addEventListener('pointerdown', e => e.preventDefault()); item.addEventListener('click', () => interaction.select(index)); list.append(item); }); }
+  if (active != null) { [...list.children].forEach((item, index) => item.setAttribute('aria-selected', String(index === active))); input.setAttribute('aria-activedescendant', `suggestion-${active}`); }
+  if (status != null) document.querySelector('#status').textContent = status;
+  if (resolved !== undefined) { output.replaceChildren(); const feature = resolved?.features?.[0], p = feature?.properties; if (!p) return; input.value = p.full_address ?? p.name; for (const [label, value] of Object.entries({ Address: p.full_address, Parcel: p.parcel_id, APN: p.apn, 'Longitude, latitude': feature.geometry?.coordinates?.join(', '), County: p.context?.county?.name, Region: p.context?.region?.name, 'Response ID': resolved.response_id })) { const dt = document.createElement('dt'), dd = document.createElement('dd'); dt.textContent = label; dd.textContent = value ?? 'Not returned'; output.append(dt, dd); } }
+});
+input.addEventListener('input', () => interaction.search(input.value)); input.addEventListener('keydown', e => { if (interaction.key(e.key)) e.preventDefault(); });
+document.querySelector('#clear').addEventListener('click', () => { input.value = ''; interaction.clear(); input.focus(); });

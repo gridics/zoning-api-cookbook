@@ -1,0 +1,4791 @@
+{
+  "components": {
+    "schemas": {
+      "AddressLookup": {
+        "additionalProperties": false,
+        "properties": {
+          "postal_code": {
+            "maxLength": 16,
+            "minLength": 3,
+            "title": "Postal Code",
+            "type": "string"
+          },
+          "street": {
+            "maxLength": 200,
+            "minLength": 3,
+            "title": "Street",
+            "type": "string"
+          }
+        },
+        "required": [
+          "street",
+          "postal_code"
+        ],
+        "title": "AddressLookup",
+        "type": "object"
+      },
+      "CoordinateLookup": {
+        "additionalProperties": false,
+        "properties": {
+          "latitude": {
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "title": "Latitude",
+            "type": "number"
+          },
+          "longitude": {
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Longitude",
+            "type": "number"
+          }
+        },
+        "required": [
+          "latitude",
+          "longitude"
+        ],
+        "title": "CoordinateLookup",
+        "type": "object"
+      },
+      "DebtRecord": {
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/ResourceValue_float_"
+          },
+          "borrower_name": {
+            "$ref": "#/components/schemas/ResourceValue_str_"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "maturity_date": {
+            "$ref": "#/components/schemas/ResourceValue_str_"
+          },
+          "origination_date": {
+            "$ref": "#/components/schemas/ResourceValue_str_"
+          }
+        },
+        "required": [
+          "id",
+          "borrower_name",
+          "origination_date",
+          "maturity_date",
+          "amount"
+        ],
+        "title": "DebtRecord",
+        "type": "object"
+      },
+      "EffectiveSetbacks": {
+        "additionalProperties": false,
+        "properties": {
+          "primary_frontage_ft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_float__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rear_ft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_float__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "secondary_frontage_ft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_float__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "side_ft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_float__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "water_ft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_float__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "title": "EffectiveSetbacks",
+        "type": "object"
+      },
+      "ExistingBuildingSummary": {
+        "additionalProperties": false,
+        "description": "Aggregate GAPI building facts; not a per-building attribution.",
+        "properties": {
+          "area_sqft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_float_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "count": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_int_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "units": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_float_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "use": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_str_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "year_built": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_int_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "title": "ExistingBuildingSummary",
+        "type": "object"
+      },
+      "FilterClause": {
+        "additionalProperties": false,
+        "properties": {
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "operator": {
+            "$ref": "#/components/schemas/FilterOperator"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "value": {
+            "title": "Value"
+          }
+        },
+        "required": [
+          "field",
+          "operator",
+          "value"
+        ],
+        "title": "FilterClause",
+        "type": "object"
+      },
+      "FilterGroup": {
+        "additionalProperties": false,
+        "properties": {
+          "all": {
+            "items": {
+              "$ref": "#/components/schemas/FilterClause"
+            },
+            "maxItems": 25,
+            "title": "All",
+            "type": "array"
+          },
+          "any": {
+            "items": {
+              "$ref": "#/components/schemas/FilterClause"
+            },
+            "maxItems": 25,
+            "title": "Any",
+            "type": "array"
+          },
+          "not": {
+            "items": {
+              "$ref": "#/components/schemas/FilterClause"
+            },
+            "maxItems": 25,
+            "title": "Not",
+            "type": "array"
+          }
+        },
+        "title": "FilterGroup",
+        "type": "object"
+      },
+      "FilterOperator": {
+        "enum": [
+          "eq",
+          "neq",
+          "in",
+          "not_in",
+          "between",
+          "gte",
+          "gt",
+          "lte",
+          "lt",
+          "contains_any",
+          "contains_all",
+          "is_null",
+          "not_null"
+        ],
+        "title": "FilterOperator",
+        "type": "string"
+      },
+      "GeoJsonPolygon": {
+        "additionalProperties": false,
+        "properties": {
+          "coordinates": {
+            "items": {
+              "items": {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ],
+                "type": "array"
+              },
+              "type": "array"
+            },
+            "maxItems": 2,
+            "minItems": 1,
+            "title": "Coordinates",
+            "type": "array"
+          },
+          "type": {
+            "const": "Polygon",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "coordinates"
+        ],
+        "title": "GeoJsonPolygon",
+        "type": "object"
+      },
+      "LocationFeature": {
+        "properties": {
+          "geometry": {
+            "additionalProperties": true,
+            "title": "Geometry",
+            "type": "object"
+          },
+          "properties": {
+            "additionalProperties": true,
+            "title": "Properties",
+            "type": "object"
+          },
+          "type": {
+            "default": "Feature",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "geometry",
+          "properties"
+        ],
+        "title": "LocationFeature",
+        "type": "object"
+      },
+      "LocationSuggestion": {
+        "properties": {
+          "context": {
+            "additionalProperties": true,
+            "title": "Context",
+            "type": "object"
+          },
+          "feature_type": {
+            "title": "Feature Type",
+            "type": "string"
+          },
+          "full_address": {
+            "title": "Full Address",
+            "type": "string"
+          },
+          "gridics_id": {
+            "title": "Gridics Id",
+            "type": "string"
+          },
+          "matched_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Matched By"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "place_formatted": {
+            "title": "Place Formatted",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "gridics_id",
+          "feature_type",
+          "full_address",
+          "place_formatted",
+          "context"
+        ],
+        "title": "LocationSuggestion",
+        "type": "object"
+      },
+      "LocationsResponse": {
+        "properties": {
+          "features": {
+            "items": {
+              "$ref": "#/components/schemas/LocationFeature"
+            },
+            "title": "Features",
+            "type": "array"
+          },
+          "response_id": {
+            "title": "Response Id",
+            "type": "string"
+          },
+          "type": {
+            "default": "FeatureCollection",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "features",
+          "response_id"
+        ],
+        "title": "LocationsResponse",
+        "type": "object"
+      },
+      "LotDetail": {
+        "additionalProperties": false,
+        "properties": {
+          "acres": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_float_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "calculated_area_sqft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_float_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "existing_land_use": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_str_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "legal_description": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_str_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lot_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_str_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "parcel_shape_area_sqft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_float_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tax_record_area_sqft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_float_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "vacant": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_bool_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "title": "LotDetail",
+        "type": "object"
+      },
+      "ParcelBuildingProjection": {
+        "additionalProperties": false,
+        "properties": {
+          "frontages": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ParcelFrontage"
+                },
+                "maxItems": 100,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frontages"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "lot": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LotDetail"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "setbacks": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EffectiveSetbacks"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "standards": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ZoningStandards"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "uses": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ParcelUseSummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "zoning": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ParcelZoningDetail"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "title": "ParcelBuildingProjection",
+        "type": "object"
+      },
+      "ParcelCentroid": {
+        "additionalProperties": false,
+        "description": "GeoJSON point in the standard longitude, latitude order.",
+        "properties": {
+          "coordinates": {
+            "items": {
+              "type": "number"
+            },
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Coordinates",
+            "type": "array"
+          },
+          "type": {
+            "const": "Point",
+            "default": "Point",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "coordinates"
+        ],
+        "title": "ParcelCentroid",
+        "type": "object"
+      },
+      "ParcelDebtHistoryResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/DebtRecord"
+            },
+            "maxItems": 50,
+            "title": "Data",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ParcelHistoryMeta"
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/ParcelHistoryPagination"
+          }
+        },
+        "required": [
+          "data",
+          "pagination",
+          "meta"
+        ],
+        "title": "ParcelDebtHistoryResponse",
+        "type": "object"
+      },
+      "ParcelDetailMeta": {
+        "additionalProperties": false,
+        "properties": {
+          "included_groups": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Included Groups",
+            "type": "array"
+          },
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          },
+          "selected_fields": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Selected Fields",
+            "type": "array"
+          }
+        },
+        "required": [
+          "request_id",
+          "included_groups",
+          "selected_fields"
+        ],
+        "title": "ParcelDetailMeta",
+        "type": "object"
+      },
+      "ParcelDetailProjection": {
+        "additionalProperties": false,
+        "description": "Bounded selector response for one authorized parcel.",
+        "properties": {
+          "buildings": {
+            "items": {
+              "$ref": "#/components/schemas/ParcelBuildingProjection"
+            },
+            "maxItems": 100,
+            "title": "Buildings",
+            "type": "array"
+          },
+          "existing_building_summary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ExistingBuildingSummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "geography": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ParcelGeographyDetail"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "identity": {
+            "$ref": "#/components/schemas/ParcelIdentity"
+          }
+        },
+        "required": [
+          "identity"
+        ],
+        "title": "ParcelDetailProjection",
+        "type": "object"
+      },
+      "ParcelDetailResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ParcelDetailProjection"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ParcelDetailMeta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ],
+        "title": "ParcelDetailResponse",
+        "type": "object"
+      },
+      "ParcelFrontage": {
+        "additionalProperties": false,
+        "properties": {
+          "frontage_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frontage Type"
+          },
+          "segments_ft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_float__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "total_length_ft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_float_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "title": "ParcelFrontage",
+        "type": "object"
+      },
+      "ParcelGeographyDetail": {
+        "additionalProperties": false,
+        "properties": {
+          "country_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country Code"
+          },
+          "county_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "County Name"
+          },
+          "municipality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Municipality"
+          },
+          "neighborhoods": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_str__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State Code"
+          }
+        },
+        "title": "ParcelGeographyDetail",
+        "type": "object"
+      },
+      "ParcelHistoryMeta": {
+        "additionalProperties": false,
+        "properties": {
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          },
+          "resource_state": {
+            "$ref": "#/components/schemas/ResourceState"
+          }
+        },
+        "required": [
+          "request_id",
+          "resource_state"
+        ],
+        "title": "ParcelHistoryMeta",
+        "type": "object"
+      },
+      "ParcelHistoryPagination": {
+        "additionalProperties": false,
+        "properties": {
+          "has_more": {
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "has_more"
+        ],
+        "title": "ParcelHistoryPagination",
+        "type": "object"
+      },
+      "ParcelIdentity": {
+        "additionalProperties": false,
+        "properties": {
+          "abutting_parcel_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 100,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Abutting Parcel Ids"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "apn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Apn"
+          },
+          "centroid": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ParcelCentroid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "place_id": {
+            "title": "Place Id",
+            "type": "string"
+          },
+          "postal_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Postal Code"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State"
+          }
+        },
+        "required": [
+          "id",
+          "place_id"
+        ],
+        "title": "ParcelIdentity",
+        "type": "object"
+      },
+      "ParcelLookupRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AddressLookup"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "apn": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Apn"
+          },
+          "coordinates": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CoordinateLookup"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "fields": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Fields",
+            "type": "array"
+          },
+          "parcel_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parcel Id"
+          },
+          "place_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Place Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "place_id"
+        ],
+        "title": "ParcelLookupRequest",
+        "type": "object"
+      },
+      "ParcelSaleHistoryResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/SaleRecord"
+            },
+            "maxItems": 50,
+            "title": "Data",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ParcelHistoryMeta"
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/ParcelHistoryPagination"
+          }
+        },
+        "required": [
+          "data",
+          "pagination",
+          "meta"
+        ],
+        "title": "ParcelSaleHistoryResponse",
+        "type": "object"
+      },
+      "ParcelSearchRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cursor"
+          },
+          "fields": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 50,
+            "title": "Fields",
+            "type": "array"
+          },
+          "filters": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FilterGroup"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "geometry": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GeoJsonPolygon"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "include_total": {
+            "default": false,
+            "title": "Include Total",
+            "type": "boolean"
+          },
+          "page_size": {
+            "default": 50,
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "ranking": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Ranking"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "scope": {
+            "$ref": "#/components/schemas/SearchScope"
+          },
+          "sort": {
+            "items": {
+              "$ref": "#/components/schemas/SortClause"
+            },
+            "maxItems": 5,
+            "title": "Sort",
+            "type": "array"
+          }
+        },
+        "required": [
+          "scope"
+        ],
+        "title": "ParcelSearchRequest",
+        "type": "object"
+      },
+      "ParcelTaxHistoryResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/TaxRecord"
+            },
+            "maxItems": 50,
+            "title": "Data",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ParcelHistoryMeta"
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/ParcelHistoryPagination"
+          }
+        },
+        "required": [
+          "data",
+          "pagination",
+          "meta"
+        ],
+        "title": "ParcelTaxHistoryResponse",
+        "type": "object"
+      },
+      "ParcelUseItem": {
+        "additionalProperties": false,
+        "properties": {
+          "building_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Building Id"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "condition_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Condition Id"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "permission": {
+            "title": "Permission",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "permission"
+        ],
+        "title": "ParcelUseItem",
+        "type": "object"
+      },
+      "ParcelUseSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "categories": {
+            "items": {
+              "$ref": "#/components/schemas/UseCategorySummary"
+            },
+            "maxItems": 50,
+            "title": "Categories",
+            "type": "array"
+          }
+        },
+        "title": "ParcelUseSummary",
+        "type": "object"
+      },
+      "ParcelUsesPagination": {
+        "additionalProperties": false,
+        "properties": {
+          "has_more": {
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "has_more"
+        ],
+        "title": "ParcelUsesPagination",
+        "type": "object"
+      },
+      "ParcelUsesResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/ParcelUseItem"
+            },
+            "title": "Data",
+            "type": "array"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ParcelDetailMeta"
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/ParcelUsesPagination"
+          }
+        },
+        "required": [
+          "data",
+          "pagination",
+          "meta"
+        ],
+        "title": "ParcelUsesResponse",
+        "type": "object"
+      },
+      "ParcelZoningDetail": {
+        "additionalProperties": false,
+        "properties": {
+          "code_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code Name"
+          },
+          "code_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code Url"
+          },
+          "districts": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ZoningDistrict"
+                },
+                "maxItems": 100,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Districts"
+          },
+          "overlays": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ZoningOverlay"
+                },
+                "maxItems": 100,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overlays"
+          },
+          "resources": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ZoningResource"
+                },
+                "maxItems": 100,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resources"
+          }
+        },
+        "title": "ParcelZoningDetail",
+        "type": "object"
+      },
+      "PublicError": {
+        "additionalProperties": false,
+        "properties": {
+          "details": {
+            "type": [
+              "object",
+              "array",
+              "string",
+              "null"
+            ]
+          },
+          "messages": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "status": {
+            "const": "ERROR",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "messages"
+        ],
+        "type": "object"
+      },
+      "Ranking": {
+        "additionalProperties": false,
+        "properties": {
+          "criteria": {
+            "items": {
+              "$ref": "#/components/schemas/RankingCriterion"
+            },
+            "maxItems": 5,
+            "title": "Criteria",
+            "type": "array"
+          }
+        },
+        "title": "Ranking",
+        "type": "object"
+      },
+      "RankingCriterion": {
+        "additionalProperties": false,
+        "properties": {
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Id",
+            "type": "string"
+          },
+          "operator": {
+            "$ref": "#/components/schemas/FilterOperator"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "value": {
+            "title": "Value"
+          },
+          "weight": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 100.0,
+            "title": "Weight",
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "field",
+          "operator",
+          "value",
+          "weight"
+        ],
+        "title": "RankingCriterion",
+        "type": "object"
+      },
+      "ResourceState": {
+        "enum": [
+          "available",
+          "not_available",
+          "not_applicable",
+          "no_records"
+        ],
+        "title": "ResourceState",
+        "type": "string"
+      },
+      "ResourceValue_bool_": {
+        "additionalProperties": false,
+        "properties": {
+          "freshness": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceFreshness"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state": {
+            "$ref": "#/components/schemas/ResourceState"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "state"
+        ],
+        "title": "ResourceValue[bool]",
+        "type": "object"
+      },
+      "ResourceValue_float_": {
+        "additionalProperties": false,
+        "properties": {
+          "freshness": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceFreshness"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state": {
+            "$ref": "#/components/schemas/ResourceState"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "state"
+        ],
+        "title": "ResourceValue[float]",
+        "type": "object"
+      },
+      "ResourceValue_int_": {
+        "additionalProperties": false,
+        "properties": {
+          "freshness": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceFreshness"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state": {
+            "$ref": "#/components/schemas/ResourceState"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "state"
+        ],
+        "title": "ResourceValue[int]",
+        "type": "object"
+      },
+      "ResourceValue_list_float__": {
+        "additionalProperties": false,
+        "properties": {
+          "freshness": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceFreshness"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state": {
+            "$ref": "#/components/schemas/ResourceState"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "state"
+        ],
+        "title": "ResourceValue[list[float]]",
+        "type": "object"
+      },
+      "ResourceValue_list_str__": {
+        "additionalProperties": false,
+        "properties": {
+          "freshness": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceFreshness"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state": {
+            "$ref": "#/components/schemas/ResourceState"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "state"
+        ],
+        "title": "ResourceValue[list[str]]",
+        "type": "object"
+      },
+      "ResourceValue_str_": {
+        "additionalProperties": false,
+        "properties": {
+          "freshness": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceFreshness"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state": {
+            "$ref": "#/components/schemas/ResourceState"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "state"
+        ],
+        "title": "ResourceValue[str]",
+        "type": "object"
+      },
+      "SaleRecord": {
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/ResourceValue_float_"
+          },
+          "date": {
+            "title": "Date",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "instrument_type": {
+            "$ref": "#/components/schemas/ResourceValue_str_"
+          },
+          "transfer_type": {
+            "$ref": "#/components/schemas/ResourceValue_str_"
+          }
+        },
+        "required": [
+          "id",
+          "date",
+          "amount",
+          "instrument_type",
+          "transfer_type"
+        ],
+        "title": "SaleRecord",
+        "type": "object"
+      },
+      "SearchScope": {
+        "additionalProperties": false,
+        "properties": {
+          "market_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 25,
+            "title": "Market Ids",
+            "type": "array"
+          },
+          "place_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 100,
+            "title": "Place Ids",
+            "type": "array"
+          }
+        },
+        "title": "SearchScope",
+        "type": "object"
+      },
+      "SimpleParcelFilters": {
+        "additionalProperties": false,
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "minLength": 3,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "apn": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Apn"
+          },
+          "maximum_lot_area_sqft": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Lot Area Sqft"
+          },
+          "minimum_lot_area_sqft": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minimum Lot Area Sqft"
+          },
+          "vacant": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vacant"
+          },
+          "zoning_codes": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Zoning Codes",
+            "type": "array"
+          }
+        },
+        "title": "SimpleParcelFilters",
+        "type": "object"
+      },
+      "SimpleParcelSearchRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cursor"
+          },
+          "fields": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Fields",
+            "type": "array"
+          },
+          "filters": {
+            "$ref": "#/components/schemas/SimpleParcelFilters"
+          },
+          "page_size": {
+            "default": 25,
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Page Size",
+            "type": "integer"
+          },
+          "place_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 25,
+            "minItems": 1,
+            "title": "Place Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "place_ids"
+        ],
+        "title": "SimpleParcelSearchRequest",
+        "type": "object"
+      },
+      "SortClause": {
+        "additionalProperties": false,
+        "properties": {
+          "direction": {
+            "$ref": "#/components/schemas/SortDirection",
+            "default": "asc"
+          },
+          "field": {
+            "title": "Field",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field"
+        ],
+        "title": "SortClause",
+        "type": "object"
+      },
+      "SortDirection": {
+        "enum": [
+          "asc",
+          "desc"
+        ],
+        "title": "SortDirection",
+        "type": "string"
+      },
+      "SourceFreshness": {
+        "additionalProperties": false,
+        "properties": {
+          "calculation_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calculation Version"
+          },
+          "observed_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Observed At"
+          },
+          "source_updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Updated At"
+          }
+        },
+        "title": "SourceFreshness",
+        "type": "object"
+      },
+      "SuggestionsResponse": {
+        "properties": {
+          "response_id": {
+            "title": "Response Id",
+            "type": "string"
+          },
+          "suggestions": {
+            "items": {
+              "$ref": "#/components/schemas/LocationSuggestion"
+            },
+            "title": "Suggestions",
+            "type": "array"
+          }
+        },
+        "required": [
+          "suggestions",
+          "response_id"
+        ],
+        "title": "SuggestionsResponse",
+        "type": "object"
+      },
+      "TaxRecord": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "improvement_value": {
+            "$ref": "#/components/schemas/ResourceValue_float_"
+          },
+          "land_value": {
+            "$ref": "#/components/schemas/ResourceValue_float_"
+          },
+          "tax_amount": {
+            "$ref": "#/components/schemas/ResourceValue_float_"
+          },
+          "total_value": {
+            "$ref": "#/components/schemas/ResourceValue_float_"
+          },
+          "total_value_basis": {
+            "default": "assessed",
+            "title": "Total Value Basis",
+            "type": "string"
+          },
+          "year": {
+            "title": "Year",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "year",
+          "tax_amount",
+          "land_value",
+          "improvement_value",
+          "total_value"
+        ],
+        "title": "TaxRecord",
+        "type": "object"
+      },
+      "UseCategorySummary": {
+        "additionalProperties": false,
+        "properties": {
+          "allowed": {
+            "minimum": 0.0,
+            "title": "Allowed",
+            "type": "integer"
+          },
+          "category": {
+            "title": "Category",
+            "type": "string"
+          },
+          "total": {
+            "minimum": 0.0,
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "category",
+          "allowed",
+          "total"
+        ],
+        "title": "UseCategorySummary",
+        "type": "object"
+      },
+      "ZoningDistrict": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "jurisdiction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jurisdiction"
+          }
+        },
+        "required": [
+          "code"
+        ],
+        "title": "ZoningDistrict",
+        "type": "object"
+      },
+      "ZoningOverlay": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          }
+        },
+        "title": "ZoningOverlay",
+        "type": "object"
+      },
+      "ZoningQueryMeta": {
+        "properties": {
+          "market_id": {
+            "title": "Market Id",
+            "type": "string"
+          },
+          "place_id": {
+            "title": "Place Id",
+            "type": "string"
+          },
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "request_id",
+          "market_id",
+          "place_id"
+        ],
+        "title": "ZoningQueryMeta",
+        "type": "object"
+      },
+      "ZoningQueryRequest": {
+        "additionalProperties": false,
+        "description": "A parcel identifier plus the explicit catalog scope used to authorize it.",
+        "properties": {
+          "group_id": {
+            "examples": [
+              "01HX7VQ8M2Y0"
+            ],
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Group Id",
+            "type": "string"
+          },
+          "market_id": {
+            "examples": [
+              "market_miami_dade"
+            ],
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Market Id",
+            "type": "string"
+          },
+          "place_id": {
+            "examples": [
+              "place_miami"
+            ],
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Place Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "market_id",
+          "place_id",
+          "group_id"
+        ],
+        "title": "ZoningQueryRequest",
+        "type": "object"
+      },
+      "ZoningQueryResponse": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ZoningRecord"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ZoningQueryMeta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ],
+        "title": "ZoningQueryResponse",
+        "type": "object"
+      },
+      "ZoningRecord": {
+        "additionalProperties": false,
+        "description": "Typed stable envelope around the upstream zoning calculation.",
+        "properties": {
+          "buildings": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Buildings",
+            "type": "array"
+          },
+          "calculation_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calculation Status"
+          },
+          "group_id": {
+            "title": "Group Id",
+            "type": "string"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "required": [
+          "group_id"
+        ],
+        "title": "ZoningRecord",
+        "type": "object"
+      },
+      "ZoningResource": {
+        "additionalProperties": false,
+        "properties": {
+          "attribute_type": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute Type"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "ZoningResource",
+        "type": "object"
+      },
+      "ZoningStandards": {
+        "additionalProperties": false,
+        "properties": {
+          "floor_area_ratio": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_float_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "floor_area_ratio_basis": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Floor Area Ratio Basis"
+          },
+          "lodging_density_rooms_acre": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_float_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "max_height_ft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_float_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "max_lot_coverage_percent": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_float_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "max_stories": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_float_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "min_open_space_percent": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_float_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "residential_density_du_acre": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_float_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "title": "ZoningStandards",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "in": "header",
+        "name": "x-api-key",
+        "type": "apiKey"
+      }
+    }
+  },
+  "info": {
+    "description": "Generated public contract for release-ready Gridics V2 data operations.",
+    "title": "Gridics Public API V2",
+    "version": "2.0.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/v2/locations/forward": {
+      "get": {
+        "operationId": "forwardLocationSearch",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "maxLength": 256,
+              "minLength": 3,
+              "title": "Q",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "maximum": 10,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "proximity",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Proximity"
+            }
+          },
+          {
+            "in": "query",
+            "name": "bbox",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Bbox"
+            }
+          },
+          {
+            "in": "query",
+            "name": "country",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Country"
+            }
+          },
+          {
+            "in": "query",
+            "name": "types",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Types"
+            }
+          },
+          {
+            "in": "query",
+            "name": "language",
+            "required": false,
+            "schema": {
+              "default": "en",
+              "title": "Language",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationsResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Resolve entitled address or APN text",
+        "tags": [
+          "v2-locations"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "one search per successful request",
+        "x-gridics-market-access": "Implicit current entitled counties; hints never authorize.",
+        "x-gridics-plan-requirement": "Active V2 API subscription.",
+        "x-gridics-product": "Location Search",
+        "x-gridics-quota-metric": "location_searches",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "location-search.execute",
+        "x-gridics-workflows": [
+          "one-off address lookup",
+          "APN resolution"
+        ]
+      }
+    },
+    "/v2/locations/retrieve/{gridics_id}": {
+      "get": {
+        "operationId": "retrieveLocation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "gridics_id",
+            "required": true,
+            "schema": {
+              "title": "Gridics Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "session_token",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationsResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Retrieve a selected location",
+        "tags": [
+          "v2-locations"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "included in the interactive search session",
+        "x-gridics-market-access": "Reauthorizes the selected location in the same search session.",
+        "x-gridics-plan-requirement": "Active V2 API subscription.",
+        "x-gridics-product": "Location Search",
+        "x-gridics-quota-metric": "location_searches",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "location-search.execute",
+        "x-gridics-workflows": [
+          "select canonical property"
+        ]
+      }
+    },
+    "/v2/locations/suggest": {
+      "get": {
+        "operationId": "suggestLocations",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "maxLength": 256,
+              "minLength": 3,
+              "title": "Q",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "maximum": 10,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "proximity",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Proximity"
+            }
+          },
+          {
+            "in": "query",
+            "name": "bbox",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Bbox"
+            }
+          },
+          {
+            "in": "query",
+            "name": "country",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Country"
+            }
+          },
+          {
+            "in": "query",
+            "name": "types",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Types"
+            }
+          },
+          {
+            "in": "query",
+            "name": "language",
+            "required": false,
+            "schema": {
+              "default": "en",
+              "title": "Language",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "session_token",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Session Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestionsResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Suggest entitled addresses and APNs",
+        "tags": [
+          "v2-locations"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "one search per interactive session",
+        "x-gridics-market-access": "Implicit current entitled counties; hints only narrow or rank.",
+        "x-gridics-plan-requirement": "Active V2 API subscription.",
+        "x-gridics-product": "Location Search",
+        "x-gridics-quota-metric": "location_searches",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "location-search.execute",
+        "x-gridics-workflows": [
+          "address autocomplete",
+          "APN autocomplete"
+        ]
+      }
+    },
+    "/v2/market-catalog": {
+      "get": {
+        "operationId": "getMarketCatalog",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 250,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Opaque next-page value returned as pagination.next_cursor. Omit it for the first page and pass it back unchanged for the next page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Opaque next-page value returned as pagination.next_cursor. Omit it for the first page and pass it back unchanged for the next page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Listmarketcatalog",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List market availability",
+        "tags": [
+          "v2-markets"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "market_catalog_request",
+        "x-gridics-market-access": "Catalog visibility does not grant data access.",
+        "x-gridics-plan-requirement": "Active V2 API subscription.",
+        "x-gridics-product": "Market Availability",
+        "x-gridics-quota-metric": "requests",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "active_v2_api_subscription",
+        "x-gridics-workflows": [
+          "browse coverage",
+          "request market access",
+          "pagination"
+        ]
+      }
+    },
+    "/v2/markets": {
+      "get": {
+        "operationId": "listMarkets",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 250,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Opaque next-page value returned as pagination.next_cursor. Omit it for the first page and pass it back unchanged for the next page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Opaque next-page value returned as pagination.next_cursor. Omit it for the first page and pass it back unchanged for the next page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Listentitledmarkets",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List entitled markets",
+        "tags": [
+          "v2-markets"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "market_list_request",
+        "x-gridics-market-access": "Returns only markets visible to the authenticated principal.",
+        "x-gridics-plan-requirement": "Active V2 API subscription.",
+        "x-gridics-product": "Market Availability",
+        "x-gridics-quota-metric": "requests",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "active_v2_api_subscription",
+        "x-gridics-workflows": [
+          "discover markets",
+          "check coverage",
+          "prepare parcel search"
+        ]
+      }
+    },
+    "/v2/markets/{market_id}": {
+      "get": {
+        "operationId": "getMarket",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "market_id",
+            "required": true,
+            "schema": {
+              "title": "Market Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Getentitledmarket",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get an entitled market",
+        "tags": [
+          "v2-markets"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "market_get_request",
+        "x-gridics-market-access": "Unauthorized markets are hidden.",
+        "x-gridics-plan-requirement": "Active V2 API subscription.",
+        "x-gridics-product": "Market Availability",
+        "x-gridics-quota-metric": "requests",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "active_v2_api_subscription",
+        "x-gridics-workflows": [
+          "market details",
+          "check entitlement"
+        ]
+      }
+    },
+    "/v2/markets/{market_id}/places": {
+      "get": {
+        "operationId": "listMarketPlaces",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "market_id",
+            "required": true,
+            "schema": {
+              "title": "Market Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 250,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Opaque next-page value returned as pagination.next_cursor. Omit it for the first page and pass it back unchanged for the next page.",
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Opaque next-page value returned as pagination.next_cursor. Omit it for the first page and pass it back unchanged for the next page.",
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Listentitledmarketplaces",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List entitled places in a market",
+        "tags": [
+          "v2-markets"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "market_places_request",
+        "x-gridics-market-access": "Only effective entitled places are returned.",
+        "x-gridics-plan-requirement": "Active V2 API subscription.",
+        "x-gridics-product": "Market Availability",
+        "x-gridics-quota-metric": "requests",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "active_v2_api_subscription",
+        "x-gridics-workflows": [
+          "discover places",
+          "prepare parcel search"
+        ]
+      }
+    },
+    "/v2/me": {
+      "get": {
+        "description": "Verify the V2 principal and durably record only safe first-success evidence.",
+        "operationId": "verifyCredential",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Verifycredential",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The API credential is missing or invalid."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The authenticated principal is not allowed to use this API surface."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Authorization state is temporarily unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Verify the current API credential",
+        "tags": [
+          "v2-auth"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "nonbillable credential verification",
+        "x-gridics-market-access": "Returns only the effective identity and entitlement scope for the authenticated principal.",
+        "x-gridics-plan-requirement": "Active V2 API subscription.",
+        "x-gridics-product": "Authentication",
+        "x-gridics-quota-metric": "none",
+        "x-gridics-rate-limit": "Authentication and edge protections apply; no market or parcel usage unit is consumed.",
+        "x-gridics-required-capability": "active_v2_api_subscription",
+        "x-gridics-workflows": [
+          "verify API key",
+          "inspect principal",
+          "diagnose entitlement"
+        ]
+      }
+    },
+    "/v2/parcels/lookup": {
+      "post": {
+        "operationId": "lookupParcel",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "address": {
+                  "postal_code": "33131",
+                  "street": "444 Brickell Ave"
+                },
+                "place_id": "place_miami_dade_county"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/ParcelLookupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Lookupparcel",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "No authorized parcel matched; existence is not disclosed outside the entitled county"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The supplied locator is ambiguous within the county"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Exactly one valid locator and one canonical county Place ID are required"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Look up one known parcel",
+        "tags": [
+          "v2-parcels"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "one standard request plus the returned parcel row",
+        "x-gridics-market-access": "Requires one canonical entitled county Place ID; unauthorized and unknown counties are hidden before lookup.",
+        "x-gridics-plan-requirement": "Standard parcel access on an active V2 plan; advanced search is not required.",
+        "x-gridics-product": "Parcel Lookup",
+        "x-gridics-quota-metric": "standard_api_calls and parcel_result_rows",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "standard_parcel_access",
+        "x-gridics-workflows": [
+          "property lookup",
+          "parcel ID lookup",
+          "APN lookup",
+          "address lookup",
+          "coordinate lookup"
+        ]
+      }
+    },
+    "/v2/parcels/search": {
+      "post": {
+        "operationId": "searchParcels",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "fields": [
+                  "parcel.address",
+                  "parcel.lot_area"
+                ],
+                "include_total": false,
+                "page_size": 25,
+                "scope": {
+                  "market_ids": [
+                    "market_miami_dade"
+                  ]
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/ParcelSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Searchparcels",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Capability or requested geography is not entitled"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Malformed typed request or unsupported search field"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Per-second rate, monthly quota, or spending control exceeded"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Upstream parcel service failure"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Authorization, catalog, limits, usage delivery, or release state unavailable"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Search parcels",
+        "tags": [
+          "v2-parcels"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "one request plus deduplicated returned rows",
+        "x-gridics-market-access": "Requires parcel_search capability and explicit entitled market/place scope.",
+        "x-gridics-plan-requirement": "Advanced parcel search capability on an active V2 plan.",
+        "x-gridics-product": "Parcel Search",
+        "x-gridics-quota-metric": "parcel_search_units and parcel_result_rows",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "parcel_search",
+        "x-gridics-workflows": [
+          "parcel lookup",
+          "site selection",
+          "franchise candidate search",
+          "cursor pagination"
+        ]
+      }
+    },
+    "/v2/parcels/search-fields": {
+      "get": {
+        "operationId": "listParcelSearchFields",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Listparcelsearchfields",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List parcel-search fields",
+        "tags": [
+          "v2-parcels"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "parcel_search_field_request",
+        "x-gridics-market-access": "Field availability varies by market capability and entitlement.",
+        "x-gridics-plan-requirement": "Advanced parcel search; use after lookup and simple search when the plan includes it.",
+        "x-gridics-product": "Parcel Search",
+        "x-gridics-quota-metric": "requests",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "parcel_search",
+        "x-gridics-workflows": [
+          "discover fields",
+          "build filters",
+          "select projection"
+        ]
+      }
+    },
+    "/v2/parcels/simple-search": {
+      "post": {
+        "operationId": "searchParcelsSimple",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "filters": {
+                  "minimum_lot_area_sqft": 5000,
+                  "vacant": true
+                },
+                "page_size": 25,
+                "place_ids": [
+                  "place_miami_dade_county"
+                ]
+              },
+              "schema": {
+                "$ref": "#/components/schemas/SimpleParcelSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Searchparcelssimple",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Search parcels in entitled counties",
+        "tags": [
+          "v2-parcels"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "one standard request plus deduplicated returned rows",
+        "x-gridics-market-access": "Requires one or more canonical entitled county Place IDs.",
+        "x-gridics-plan-requirement": "Standard parcel access on an active V2 plan; advanced search is not required.",
+        "x-gridics-product": "Parcel Search",
+        "x-gridics-quota-metric": "standard_api_calls and parcel_result_rows",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "standard_parcel_access",
+        "x-gridics-workflows": [
+          "county parcel search",
+          "first integration",
+          "address search",
+          "APN search",
+          "cursor pagination"
+        ]
+      }
+    },
+    "/v2/parcels/{parcel_id}": {
+      "get": {
+        "operationId": "getParcelDetail",
+        "parameters": [
+          {
+            "description": "Parcel identifier returned by lookup or search; resolved within the required place_id county context.",
+            "in": "path",
+            "name": "parcel_id",
+            "required": true,
+            "schema": {
+              "description": "Parcel identifier returned by lookup or search; resolved within the required place_id county context.",
+              "title": "Parcel Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Canonical county ID returned by market discovery. Selects the county data source and enforces geography entitlement.",
+            "in": "query",
+            "name": "place_id",
+            "required": true,
+            "schema": {
+              "description": "Canonical county ID returned by market discovery. Selects the county data source and enforces geography entitlement.",
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Place Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Optional response groups: geography, lot, buildings, frontages, zoning, uses, setbacks, and standards.",
+            "in": "query",
+            "name": "include",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional response groups: geography, lot, buildings, frontages, zoning, uses, setbacks, and standards.",
+              "title": "Include"
+            }
+          },
+          {
+            "description": "Optional field names within the selected include groups. Omit to return every field in those groups; discover allowed names with GET /v2/parcels/search-fields.",
+            "in": "query",
+            "name": "fields",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional field names within the selected include groups. Omit to return every field in those groups; discover allowed names with GET /v2/parcels/search-fields.",
+              "title": "Fields"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParcelDetailResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "An explicitly requested group or field is not included"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Unknown or unauthorized parcel or geography"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Unknown include, field, or field outside its included group"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get a bounded parcel projection",
+        "tags": [
+          "v2-parcels"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "one standard request plus one returned parcel row",
+        "x-gridics-market-access": "Requires one canonical entitled county Place ID. Unknown and unauthorized parcels or counties share the same not-found response. Includes and fields only narrow existing grants.",
+        "x-gridics-plan-requirement": "Standard parcel access for identity and lot data; zoning_query for zoning, uses, setbacks, and standards.",
+        "x-gridics-product": "Parcel Detail",
+        "x-gridics-quota-metric": "standard_api_calls and parcel_result_rows",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "standard_parcel_access",
+        "x-gridics-workflows": [
+          "retrieve parcel identity",
+          "select lot details",
+          "select zoning and setbacks"
+        ]
+      }
+    },
+    "/v2/parcels/{parcel_id}/debts": {
+      "get": {
+        "operationId": "listParcelDebts",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "parcel_id",
+            "required": true,
+            "schema": {
+              "title": "Parcel Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "place_id",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Place Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParcelDebtHistoryResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List enhanced debt records for an entitled parcel",
+        "tags": [
+          "v2-parcels"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "one standard request plus one parcel row",
+        "x-gridics-market-access": "Requires the parcel's canonical entitled county; every source row is APN-, county-FIPS-, and dataset-reference-bound.",
+        "x-gridics-plan-requirement": "Enhanced Property Data add-on on an active V2 plan.",
+        "x-gridics-product": "Enhanced Property Data",
+        "x-gridics-quota-metric": "standard_api_calls and parcel_result_rows",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "enhanced_property_data",
+        "x-gridics-workflows": [
+          "list debt history",
+          "inspect mortgage dates",
+          "paginate enhanced history"
+        ]
+      }
+    },
+    "/v2/parcels/{parcel_id}/sales": {
+      "get": {
+        "operationId": "listParcelSales",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "parcel_id",
+            "required": true,
+            "schema": {
+              "title": "Parcel Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "place_id",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Place Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParcelSaleHistoryResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List enhanced sale records for an entitled parcel",
+        "tags": [
+          "v2-parcels"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "one standard request plus one parcel row",
+        "x-gridics-market-access": "Requires the parcel's canonical entitled county; every source row is APN-, county-FIPS-, and dataset-reference-bound.",
+        "x-gridics-plan-requirement": "Enhanced Property Data add-on on an active V2 plan.",
+        "x-gridics-product": "Enhanced Property Data",
+        "x-gridics-quota-metric": "standard_api_calls and parcel_result_rows",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "enhanced_property_data",
+        "x-gridics-workflows": [
+          "list sale history",
+          "inspect deed types",
+          "paginate enhanced history"
+        ]
+      }
+    },
+    "/v2/parcels/{parcel_id}/taxes": {
+      "get": {
+        "operationId": "listParcelTaxes",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "parcel_id",
+            "required": true,
+            "schema": {
+              "title": "Parcel Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "place_id",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Place Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParcelTaxHistoryResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List enhanced tax records for an entitled parcel",
+        "tags": [
+          "v2-parcels"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "one standard request plus one parcel row",
+        "x-gridics-market-access": "Requires the parcel's canonical entitled county; every source row is APN-, county-FIPS-, and dataset-reference-bound.",
+        "x-gridics-plan-requirement": "Enhanced Property Data add-on on an active V2 plan.",
+        "x-gridics-product": "Enhanced Property Data",
+        "x-gridics-quota-metric": "standard_api_calls and parcel_result_rows",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "enhanced_property_data",
+        "x-gridics-workflows": [
+          "list tax history",
+          "inspect assessed values",
+          "paginate enhanced history"
+        ]
+      }
+    },
+    "/v2/parcels/{parcel_id}/uses": {
+      "get": {
+        "operationId": "listParcelUses",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "parcel_id",
+            "required": true,
+            "schema": {
+              "title": "Parcel Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "place_id",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Place Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Page Size",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParcelUsesResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "List detailed permitted uses for an entitled parcel",
+        "tags": [
+          "v2-parcels"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "one standard request plus one parcel row",
+        "x-gridics-market-access": "Requires the parcel's canonical entitled county and zoning capability. Cursor pages are bound to the current client, subscription, entitlement revision, parcel, county, and page size.",
+        "x-gridics-plan-requirement": "Zoning query capability on an active V2 plan.",
+        "x-gridics-product": "Parcel Uses",
+        "x-gridics-quota-metric": "standard_api_calls and parcel_result_rows",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "zoning_query",
+        "x-gridics-workflows": [
+          "list permitted uses",
+          "inspect use permissions",
+          "paginate parcel uses"
+        ]
+      }
+    },
+    "/v2/zoning/query": {
+      "post": {
+        "operationId": "queryZoning",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "group_id": "01HX7VQ8M2Y0",
+                "market_id": "market_miami_dade",
+                "place_id": "place_miami"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/ZoningQueryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoningQueryResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Unknown or unauthorized market, place, or zoning record"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Malformed typed request"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Rate or quota limit exceeded"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Upstream zoning service failure"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Authorization or catalog state unavailable"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Query zoning for an entitled parcel",
+        "tags": [
+          "v2-zoning"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "one successful zoning query",
+        "x-gridics-market-access": "Unknown and unauthorized market/place scopes are identically hidden.",
+        "x-gridics-plan-requirement": "Zoning query capability on an active V2 plan.",
+        "x-gridics-product": "Zoning",
+        "x-gridics-quota-metric": "zoning_query_units",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "zoning_query",
+        "x-gridics-workflows": [
+          "retrieve zoning",
+          "inspect development capacity"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.gridics.com"
+    }
+  ]
+}

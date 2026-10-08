@@ -1,0 +1,52 @@
+name: Discover cookbook test values
+on:
+  workflow_dispatch:
+    inputs:
+      market_name:
+        description: Optional entitled market name
+        type: string
+        required: false
+      place_name:
+        description: Optional entitled county name
+        type: string
+        required: false
+      address:
+        description: Optional approved public address to resolve
+        type: string
+        required: false
+      verify_zoning:
+        description: Also verify zoning for the discovered parcel
+        type: boolean
+        default: false
+      postal_code:
+        description: Optional public postal-code hint, verified by address lookup
+        type: string
+        required: false
+permissions:
+  contents: read
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    environment: production-verification
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Discover one authorized test property
+        env:
+          GRIDICS_MARKET_NAME_HINT: ${{ inputs.market_name }}
+          GRIDICS_PLACE_NAME_HINT: ${{ inputs.place_name }}
+          GRIDICS_ADDRESS_HINT: ${{ inputs.address }}
+          GRIDICS_VERIFY_ZONING_HINT: ${{ inputs.verify_zoning }}
+          GRIDICS_POSTAL_CODE_HINT: ${{ inputs.postal_code }}
+          GRIDICS_API_KEY: ${{ secrets.GRIDICS_API_KEY }}
+          GRIDICS_VERIFICATION_PROFILE: ${{ vars.GRIDICS_VERIFICATION_PROFILE }}
+        run: python3 tools/discover_test_values.py
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: cookbook-test-values
+          path: reports/discovery/test-values.json
+          retention-days: 1
