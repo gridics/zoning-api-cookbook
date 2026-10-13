@@ -19,17 +19,19 @@
 | 15 | [Due diligence](../recipes/15-due-diligence/) | Business | Parcel + optional zoning |
 | 16 | [MCP tools](../recipes/16-mcp-tools/) | Advanced | Read-only allow-listed tools |
 | 17 | [Appraiser zoning lookup](../recipes/17-appraiser-zoning-lookup/) | Business | Direct V2 + hosted MCP equivalent |
-| 18 | [Location Search](../recipes/18-location-search/) | Beginner / preview | Suggest/retrieve/forward; no required county ID; protected live verification required before GA claim |
+| 18 | [Location Search](../recipes/18-location-search/) | Beginner / preview | Suggest/retrieve/forward; no required county ID; live verification pending |
+| 19 | [Address to zoning](../recipes/19-address-to-zoning/) | Beginner | One-request zoning lookup; fixture-tested, live verification pending |
+| 20 | [Parcel zoning](../recipes/20-parcel-zoning/) | Beginner | Typed zoning for a known parcel; fixture-tested, live verification pending |
 
 Every row has seven runnable language entry points. Runtime-specific CI plus `tests/validate_repository.py` enforce completeness.
 
 
 ## Browse by problem
 
-- **Zoning by address/APN:** 18 → 03 → 04
+- **Zoning by address/APN:** 19
 - **Interactive autocomplete:** 18 suggest → retrieve, then use the returned parcel identity.
 - **One-off address/APN resolution:** 18 forward; inspect ambiguous or empty results.
-- **Known parcel:** 03 lookup with an entitled county; 04 queries zoning for its returned identity.
+- **Known parcel:** 03 lookup with an entitled county; 20 reads zoning for its returned identity. Recipe 04 retains the older query contract.
 - **Common parcel filters:** 05 simple search. Use 08 only for typed filters marked available by field discovery.
 - **Development/redevelopment:** 08 → 09 → 11
 - **Site selection:** 08 → 09 → 12

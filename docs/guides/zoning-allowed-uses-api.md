@@ -1,6 +1,6 @@
 # Zoning rules and allowed uses
 
-Resolve the canonical parcel first with [Location Search](../../recipes/18-location-search/) or [exact parcel lookup](../../recipes/03-property-lookup/). The current [zoning query](../../recipes/04-zoning-query/) returns the parcel's available zoning response. For detailed use permissions, the public contract also defines `GET /v2/parcels/{parcel_id}/uses` with the parcel's entitled `place_id` and cursor pagination.
+For an address or APN, use [address to zoning](../../recipes/19-address-to-zoning/) directly. For a known parcel, [parcel zoning](../../recipes/20-parcel-zoning/) returns its typed zoning resource. The older [zoning query](../../recipes/04-zoning-query/) remains available for compatibility. For detailed use permissions, the public contract also defines `GET /v2/parcels/{parcel_id}/uses` with the parcel's entitled `place_id` and cursor pagination.
 
 Preserve each returned building and district. Keep the returned `permission` for each use; a use absent from the response is not automatically prohibited. Keep ordinance links only when returned by the API, and label missing or unavailable values as unknown. Do not infer permitting or legal conclusions from a missing field.
 

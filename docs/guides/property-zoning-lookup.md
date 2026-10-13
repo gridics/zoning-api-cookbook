@@ -1,6 +1,10 @@
 # Property zoning lookup by address, APN, or parcel
 
-The current published V2 contract uses two steps: resolve the property, then query zoning for its returned identity. This guide describes the available API; fixture checks do not establish production access for your account.
+The published V2 contract supports a one-request address/APN-to-zoning lookup. This guide describes the available API; fixture checks do not establish production access for your account.
+
+## Start with zoning by address or APN
+
+Call `POST /v2/zoning/lookup` with one locator, for example `{"address":"100 Example Ave"}`. No county ID is needed for the usual case. A 409 ambiguity requires a user choice; do not silently pick one property. [Recipe 19](../../recipes/19-address-to-zoning/) has seven language ports. Fixture verification is complete; live production behavior has not been verified by this cookbook.
 
 ## Pick the resolver
 
@@ -14,7 +18,7 @@ Location Search does not require callers to discover a county ID. It is still a 
 
 ## Query zoning
 
-Call `POST /v2/zoning/query` using the returned canonical Market, Place, and parcel identifiers. [Recipe 04](../../recipes/04-zoning-query/) contains seven server-language ports. Keep multiple matching parcels visible to the user rather than choosing one silently. Retain multiple buildings and zoning districts, ordinance links, request IDs, and unknown values in the result.
+For a known parcel, call `GET /v2/parcels/{parcel_id}/zoning` with its entitled `place_id`; [recipe 20](../../recipes/20-parcel-zoning/) has seven language ports. The older `POST /v2/zoning/query` flow remains in [recipe 04](../../recipes/04-zoning-query/). Keep multiple matching parcels visible to the user rather than choosing one silently. Retain multiple buildings and zoning districts, ordinance links, request IDs, and unknown values in the result.
 
 For additional available parcel details and paginated use permissions, inspect the public [OpenAPI contract](../../contracts/openapi-v2.json) and your account's field discovery response. Do not treat an omitted field as “not permitted.”
 

@@ -20,6 +20,7 @@ if security.get("name") != "x-api-key" or security.get("in") != "header":
 for recipe in manifest["recipes"]:
     for step in recipe["steps"]:
         path = re.sub(r"\$\{GRIDICS_MARKET_ID\}", "{market_id}", step["path"])
+        path = re.sub(r"\$\{GRIDICS_PARCEL_ID\}", "{parcel_id}", path)
         path = path.split("?", 1)[0]
         operation = openapi.get("paths", {}).get(path, {}).get(step["method"].lower())
         if not operation:
@@ -27,7 +28,7 @@ for recipe in manifest["recipes"]:
         elif operation.get("x-gridics-audience") != "public":
             errors.append(f"recipe {recipe['id']} operation is not marked public: {step['method']} {path}")
 
-required_schemas = ["ParcelLookupRequest", "SimpleParcelSearchRequest", "ParcelSearchRequest", "ZoningQueryRequest", "PublicError"]
+required_schemas = ["ParcelLookupRequest", "SimpleParcelSearchRequest", "ParcelSearchRequest", "ZoningQueryRequest", "ZoningLookupRequest", "ZoningParcelResponse", "PublicError"]
 schemas = openapi.get("components", {}).get("schemas", {})
 for name in required_schemas:
     if name not in schemas: errors.append(f"missing public schema {name}")

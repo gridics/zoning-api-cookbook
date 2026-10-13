@@ -5,7 +5,7 @@
     "default_base_url": "https://api.gridics.com",
     "authentication_header": "x-api-key",
     "contract_source": "contracts/openapi-v2.json",
-    "reviewed_on": "2026-10-05"
+    "reviewed_on": "2026-10-13"
   },
   "defaults": {
     "GRIDICS_MARKET_ID": "market_example",
@@ -717,6 +717,48 @@
           "name": "retrieve",
           "method": "GET",
           "path": "/v2/locations/retrieve/{gridics_id}"
+        }
+      ]
+    },
+    {
+      "id": "19",
+      "slug": "address-to-zoning",
+      "title": "Address to zoning",
+      "level": "beginner",
+      "outcome": "Resolve an address or APN and retrieve available zoning in one request, without discovering a county ID.",
+      "usage": "One zoning lookup request; account capability, geographic entitlement, and quota apply.",
+      "endpoints": [
+        "POST /v2/zoning/lookup"
+      ],
+      "steps": [
+        {
+          "name": "zoning",
+          "method": "POST",
+          "path": "/v2/zoning/lookup",
+          "body": {
+            "address": "${GRIDICS_ADDRESS}"
+          }
+        }
+      ]
+    },
+    {
+      "id": "20",
+      "slug": "parcel-zoning",
+      "title": "Zoning for a known parcel",
+      "level": "beginner",
+      "outcome": "Read the typed zoning resource for a known parcel in its entitled county.",
+      "usage": "One parcel zoning request; account capability, geographic entitlement, and quota apply.",
+      "endpoints": [
+        "GET /v2/parcels/{parcel_id}/zoning"
+      ],
+      "steps": [
+        {
+          "name": "zoning",
+          "method": "GET",
+          "path": "/v2/parcels/${GRIDICS_PARCEL_ID}/zoning",
+          "query": {
+            "place_id": "${GRIDICS_PLACE_ID}"
+          }
         }
       ]
     }
