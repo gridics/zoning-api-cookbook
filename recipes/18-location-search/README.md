@@ -25,8 +25,8 @@ Complete the repository [Getting started](../../README.md#get-an-api-key), copy 
 # Generate a UUIDv4 once for this interaction.
 SESSION_TOKEN=$(python3 -c "import uuid; print(uuid.uuid4())")
 curl --fail-with-body --get "${GRIDICS_API_BASE_URL}/v2/locations/suggest" --header "x-api-key: ${GRIDICS_API_KEY}" --data-urlencode "q=100 Example Ave" --data-urlencode "session_token=${SESSION_TOKEN}" > suggestions.json
-# Inspect suggestions (requires jq), then set GRIDICS_ID to the selected result.
-jq '.suggestions[] | {name, full_address, gridics_id}' suggestions.json
+# Inspect suggestions, then set GRIDICS_ID to the selected result.
+cat suggestions.json
 : "${GRIDICS_ID:?Set GRIDICS_ID to the suggestion selected by the user}"
 curl --fail-with-body --get "${GRIDICS_API_BASE_URL}/v2/locations/retrieve/${GRIDICS_ID}" --header "x-api-key: ${GRIDICS_API_KEY}" --data-urlencode "session_token=${SESSION_TOKEN}"
 # Separate one-off lookup (one commercial unit):

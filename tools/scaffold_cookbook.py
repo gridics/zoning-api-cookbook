@@ -176,7 +176,8 @@ for rid, slug, title, level, endpoints, outcome, usage in recipes:
     for lang, (label, command) in LANGUAGES.items():
         commands.append(f"### {label}\n\n```bash\ncd recipes/{rid}-{slug}/{lang}\n{command.format(slug=f'{rid}-{slug}')}\n```")
     notes = {
-        "03": "Choose exactly one lookup form. The checked-in request uses an address; edit the recipe request or use the APN/parcel/coordinate variants described in `docs/request-reference.md`. A `409` means the locator was ambiguous; do not silently choose a result.",
+        "03": "Choose exactly one lookup form. The checked-in request uses an address; edit the recipe request or use the APN/parcel/coordinate variants described in `docs/request-reference.md`. A `409` means the locator was ambiguous; do not silently choose a result.\nThe returned `data.id` is the parcel identifier for subsequent parcel calls. Keep the returned `place_id`; do not substitute an unrelated county ID.",
+        "04": "The same manifest drives every language port, so route, method, request body, bounds, and normalized output stay aligned. A zoning query can return multiple buildings or districts; preserve them and source links. For detailed use permissions, inspect the published parcel uses operation when your plan supports it. Missing source values are unknown, never a denial or a negative zoning determination.",
         "06": "Every native runner follows the opaque `next_cursor` with the original scope and filters, stops on an absent or repeated cursor, and enforces the three-page/100-row bounds. The normalized `workflow` section combines the returned rows and reports whether traversal completed within those bounds.",
         "07": "The runners retry only `429`, `502`, and `503`, honor `Retry-After`, add bounded exponential delay, and never retry authentication, authorization, validation, not-found, or ambiguity responses.",
         "10": "The checked-in two-row synthetic portfolio demonstrates address and APN rows with row-level status in the normalized `workflow` output. Use `fixtures/portfolio.csv` as the input contract when adapting the bounded loop; preserve strings, input order, duplicate lineage, and spreadsheet-safe CSV escaping.",
@@ -188,8 +189,17 @@ for rid, slug, title, level, endpoints, outcome, usage in recipes:
         "17": "Use GRIDICS_LOCATOR=address, apn or parcel_id. Resolve canonical IDs before zoning; keep unknowns explicit. Hosted /mcp and appraiser-zoning are documented separately and are not fixture verification.",
         "16": "Start the JSON-RPC server with the language runner's `--mcp` option. It supports MCP initialization, `tools/list`, and typed `tools/call` for allow-listed read-only operations. The API key stays in the server environment and never appears in tool schemas or results. This is an educational local adapter; use public Gridics documentation for any hosted integration. Never paste an API key into an LLM or hosted connection.",
     }.get(rid, "The same manifest drives every language port, so route, method, request body, bounds, and normalized output stay aligned.")
+    intros = {
+        "03": "Use this when the county and exact locator are already known. For a free-form address or APN without a county ID, use [Location Search](../18-location-search/) first. An interactive field uses suggest → retrieve; a one-off server request uses forward.",
+        "04": "This is the published multi-step zoning path. Resolve an address or APN with [recipe 18](../18-location-search/) or an exact parcel with [recipe 03](../03-property-lookup/), review ambiguity, then use the returned identifiers. The request body retains `group_id` because that is the current public query contract; the value comes from the resolved parcel, not a manually constructed backend ID.",
+        "05": "This example only filters on vacancy. The published schema lists lot-area and zoning-code fields, but describes their nonempty filters as unavailable. Do not add those predicates just because the corresponding values can appear in results.",
+        "08": "The example uses the verified vacancy equality filter and leaves `sort` empty. A field's returned value does not prove it can be filtered or sorted. Check `filter_caller_available`, supported operators, and `sortable` in the live field-discovery response before editing the request. Lot-size and zoning-code predicates, arbitrary sorting, and ranking are not advertised as available by this recipe.",
+        "17": "This recipe uses the published county-scoped lookup because the subject county is known. For free-form intake, use [Location Search](../18-location-search/) first, inspect every returned candidate, and carry the selected canonical identifiers into zoning query. The report remains factual screening, not a formal zoning determination.",
+        "18": "Choose **suggest → retrieve** for an interactive input where a person selects one suggestion. Choose **forward** for a one-off address or APN resolution with no selection session. Forward can return multiple features; inspect them instead of silently choosing the first. For an already known parcel and county, use [recipe 03](../03-property-lookup/).",
+    }
     if rid == "18":
-        curl_examples = ['```bash\n# Generate a UUIDv4 once for this interaction.\nSESSION_TOKEN=$(python3 -c "import uuid; print(uuid.uuid4())")\ncurl --fail-with-body --get "${GRIDICS_API_BASE_URL}/v2/locations/suggest" --header "x-api-key: ${GRIDICS_API_KEY}" --data-urlencode "q=100 Example Ave" --data-urlencode "session_token=${SESSION_TOKEN}" > suggestions.json\n# Inspect suggestions before selecting one; requires jq.\nGRIDICS_ID=$(jq -er \".suggestions[0].gridics_id\" suggestions.json)\ncurl --fail-with-body --get "${GRIDICS_API_BASE_URL}/v2/locations/retrieve/${GRIDICS_ID}" --header "x-api-key: ${GRIDICS_API_KEY}" --data-urlencode "session_token=${SESSION_TOKEN}"\n# Separate one-off lookup (one commercial unit):\ncurl --fail-with-body --get "${GRIDICS_API_BASE_URL}/v2/locations/forward" --header "x-api-key: ${GRIDICS_API_KEY}" --data-urlencode "q=100 Example Ave"\n```']
+        curl_examples = ['```bash\n# Generate a UUIDv4 once for this interaction.\nSESSION_TOKEN=$(python3 -c "import uuid; print(uuid.uuid4())")\ncurl --fail-with-body --get "${GRIDICS_API_BASE_URL}/v2/locations/suggest" --header "x-api-key: ${GRIDICS_API_KEY}" --data-urlencode "q=100 Example Ave" --data-urlencode "session_token=${SESSION_TOKEN}" > suggestions.json\n# Inspect suggestions, then set GRIDICS_ID to the selected result.\ncat suggestions.json\n: "${GRIDICS_ID:?Set GRIDICS_ID to the suggestion selected by the user}"\ncurl --fail-with-body --get "${GRIDICS_API_BASE_URL}/v2/locations/retrieve/${GRIDICS_ID}" --header "x-api-key: ${GRIDICS_API_KEY}" --data-urlencode "session_token=${SESSION_TOKEN}"\n# Separate one-off lookup (one commercial unit):\ncurl --fail-with-body --get "${GRIDICS_API_BASE_URL}/v2/locations/forward" --header "x-api-key: ${GRIDICS_API_KEY}" --data-urlencode "q=100 Example Ave"\n```']
+    intro_section = f"\n\n{intros[rid]}" if rid in intros else ""
     readme = f"""
 # {rid}. {title}
 
@@ -197,7 +207,7 @@ for rid, slug, title, level, endpoints, outcome, usage in recipes:
 
 ## Business outcome
 
-{outcome}
+{outcome}{intro_section}
 
 ## API operations
 
