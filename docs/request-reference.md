@@ -8,6 +8,8 @@ Property lookup accepts one county/Place plus exactly one locator: parcel ID, AP
 
 Simple search supports common county-scoped filters. Advanced search uses the authoritative `/v2/parcels/search-fields` response for field names, supported operators, units, projection, sorting, and availability. Never send private backend aliases or raw query syntax.
 
+Use `/v2/locations/suggest` followed by `/v2/locations/retrieve/{gridics_id}` for interactive autocomplete. Use `/v2/locations/forward` for a one-off text resolution. Use `/v2/parcels/lookup` when you have an exact locator and entitled county. Use `/v2/parcels/simple-search` for common filters; use `/v2/parcels/search` only after checking its typed field/operator availability. Ranking and arbitrary sorting are not established by the published examples.
+
 Pagination cursors are opaque. Send them back unchanged with the same scope/query. Stop on an absent or repeated cursor and enforce page and row limits. Do not describe traversal as a point-in-time snapshot unless the public API explicitly guarantees that behavior.
 
 Error handling distinguishes `401` authentication, `403` capability/entitlement, `404` hidden or missing resources, `409` ambiguity, `422` validation, `429` limits, `502` upstream failure, and `503` temporarily unavailable authorization/catalog/usage/release state. Runners retry only bounded transient statuses and honor `Retry-After` when present.

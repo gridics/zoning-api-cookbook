@@ -26,6 +26,11 @@ Gridics is designed for applications that need structured property and zoning in
 | I want to... | Start here |
 |---|---|
 | Get zoning for an address or APN | [Location Search](recipes/18-location-search/) → [Property lookup](recipes/03-property-lookup/) → [Zoning query](recipes/04-zoning-query/) |
+| Resolve one free-form address or APN | [Location Search forward](recipes/18-location-search/) |
+| Add interactive autocomplete | [Location Search suggest → retrieve](recipes/18-location-search/) |
+| Look up an exact known parcel | [Property lookup](recipes/03-property-lookup/) |
+| Search parcels with common filters | [Simple search](recipes/05-simple-search/) |
+| Search with verified typed filters | [Field discovery](recipes/08-advanced-search/) → [Advanced search](recipes/08-advanced-search/) |
 | Build a property zoning lookup | [Property zoning guide](docs/guides/property-zoning-lookup.md) |
 | Add address autocomplete to an app | [React Location Search](examples/react-location-search/) or [plain browser example](examples/browser-location-autocomplete/) |
 | Show zoning and development information in a product UI | [Zoning Explorer](examples/react-zoning-explorer/) |
@@ -88,7 +93,7 @@ Run [recipe 02](recipes/02-discover-counties/) to distinguish Gridics coverage f
 
 ### 5. Solve a real problem
 
-For zoning-by-address, continue with [recipe 18](recipes/18-location-search/) for free-form resolution, then [recipe 04](recipes/04-zoning-query/) for zoning. For development/site-selection workflows, start with [recipe 08](recipes/08-advanced-search/).
+For zoning-by-address using the currently published contract, use [recipe 18](recipes/18-location-search/) to resolve an address or APN, then [recipe 04](recipes/04-zoning-query/) for zoning. Interactive UI uses suggest → retrieve; a one-off server lookup uses forward. Check returned candidates before selecting a parcel. For development/site-selection workflows, start with [recipe 05](recipes/05-simple-search/) or the verified filters in [recipe 08](recipes/08-advanced-search/).
 
 ## Why Gridics for zoning-aware applications?
 

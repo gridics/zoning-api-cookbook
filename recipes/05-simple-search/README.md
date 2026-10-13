@@ -7,6 +7,8 @@
 
 Find a small list of vacant parcels; add other constraints only when field discovery confirms filter availability.
 
+This example only filters on vacancy. The published schema lists lot-area and zoning-code fields, but describes their nonempty filters as unavailable. Do not add those predicates just because the corresponding values can appear in results.
+
 ## API operations
 
 - `POST /v2/parcels/simple-search`

@@ -1,23 +1,15 @@
 # Zoning API for property and parcel applications
 
-A zoning API should answer a developer's real workflow question: identify the correct property, retrieve the zoning attached to that property, preserve the source context, and keep unknown values explicit.
+The published V2 path resolves the correct parcel first and then requests zoning for that parcel. Keep the returned county, parcel identity, request ID, source context, and unknown values together.
 
-With Gridics, start by resolving a canonical parcel with [property lookup](../../recipes/03-property-lookup/) or [Location Search](../../recipes/18-location-search/). Then use [zoning query](../../recipes/04-zoning-query/) with the returned Market, Place, and parcel identifiers.
+## Start with the right operation
 
-## Common applications
+- **Interactive address/APN box:** [Location Search](../../recipes/18-location-search/) suggest → retrieve with one session token.
+- **One-off address/APN:** Location Search forward; review all returned candidates.
+- **Known exact parcel and county:** [Property lookup](../../recipes/03-property-lookup/).
+- **Common county-scoped search:** [Simple search](../../recipes/05-simple-search/).
+- **Advanced typed search:** [Field discovery and advanced search](../../recipes/08-advanced-search/); only send fields and operators currently marked available.
 
-- property-detail pages that need zoning alongside parcel facts;
-- brokerage, appraisal, and due-diligence workflows;
-- development and redevelopment screening;
-- site-selection applications;
-- zoning-aware AI assistants and agent tools.
+Then use [zoning query](../../recipes/04-zoning-query/) with the identifiers returned by resolution. The current query response can contain multiple buildings; do not collapse them into one invented district or capacity value. Detailed use permissions are a separate public parcel operation when entitled. Preserve each returned `permission` value and distinguish it from missing source data.
 
-## Recommended request flow
-
-1. Resolve the address, APN, parcel ID, or coordinates.
-2. Confirm the canonical parcel and geography returned by Gridics.
-3. Request zoning using those returned identifiers.
-4. Preserve request/provenance metadata and unknown values.
-5. Treat the response as factual data, not a permit or legal conclusion.
-
-Start with [recipe 03](../../recipes/03-property-lookup/), [recipe 04](../../recipes/04-zoning-query/), and the [Developer Portal](https://developer.gridics.com/get-started).
+The checked-in [public OpenAPI](../../contracts/openapi-v2.json) describes request shapes; the Developer Portal is authoritative for your current plan and geography. The cookbook's routine tests use synthetic fixtures, so test an entitled property before depending on a live workflow.

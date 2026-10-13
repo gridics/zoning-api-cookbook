@@ -27,6 +27,10 @@ Every row has seven runnable language entry points. Runtime-specific CI plus `te
 ## Browse by problem
 
 - **Zoning by address/APN:** 18 → 03 → 04
+- **Interactive autocomplete:** 18 suggest → retrieve, then use the returned parcel identity.
+- **One-off address/APN resolution:** 18 forward; inspect ambiguous or empty results.
+- **Known parcel:** 03 lookup with an entitled county; 04 queries zoning for its returned identity.
+- **Common parcel filters:** 05 simple search. Use 08 only for typed filters marked available by field discovery.
 - **Development/redevelopment:** 08 → 09 → 11
 - **Site selection:** 08 → 09 → 12
 - **Portfolio enrichment:** 10

@@ -1,15 +1,7 @@
-# Zoning rules and allowed-use data
+# Zoning rules and allowed uses
 
-Applications often need more than a district code. The useful question is what zoning rules or use information are actually available for the resolved parcel.
+Resolve the canonical parcel first with [Location Search](../../recipes/18-location-search/) or [exact parcel lookup](../../recipes/03-property-lookup/). The current [zoning query](../../recipes/04-zoning-query/) returns the parcel's available zoning response. For detailed use permissions, the public contract also defines `GET /v2/parcels/{parcel_id}/uses` with the parcel's entitled `place_id` and cursor pagination.
 
-The public zoning response can include structured zoning sections defined by the current API contract. Your application should inspect the returned response and capability/field availability rather than assume every jurisdiction releases the same fields.
+Preserve each returned building and district. Keep the returned `permission` for each use; a use absent from the response is not automatically prohibited. Keep ordinance links only when returned by the API, and label missing or unavailable values as unknown. Do not infer permitting or legal conclusions from a missing field.
 
-## Implementation guidance
-
-- resolve the canonical parcel first;
-- request zoning for that parcel;
-- render returned rules and use information as factual fields;
-- keep unavailable or omitted fields distinct from a negative result;
-- never infer a legal conclusion from a missing field.
-
-Use [recipe 04](../../recipes/04-zoning-query/) and the checked-in [OpenAPI V2 contract](../../contracts/openapi-v2.json) as the implementation references.
+Check [field discovery](../../recipes/08-advanced-search/) and your active plan before using capability-gated data. The checked-in [OpenAPI V2 contract](../../contracts/openapi-v2.json) describes the shape; fixture results are not live production verification.

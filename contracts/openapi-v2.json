@@ -2399,6 +2399,12 @@
         "in": "header",
         "name": "x-api-key",
         "type": "apiKey"
+      },
+      "PublishableKey": {
+        "description": "Location Search only; exact allowed Origin required. Test/live environments, explicit scopes, current subscription geography and quota apply.",
+        "in": "header",
+        "name": "X-Gridics-Publishable-Key",
+        "type": "apiKey"
       }
     }
   },
@@ -2576,6 +2582,9 @@
         "security": [
           {
             "ApiKeyAuth": []
+          },
+          {
+            "PublishableKey": []
           }
         ],
         "summary": "Resolve entitled address or APN text",
@@ -2685,6 +2694,9 @@
         "security": [
           {
             "ApiKeyAuth": []
+          },
+          {
+            "PublishableKey": []
           }
         ],
         "summary": "Retrieve a selected location",
@@ -2881,6 +2893,9 @@
         "security": [
           {
             "ApiKeyAuth": []
+          },
+          {
+            "PublishableKey": []
           }
         ],
         "summary": "Suggest entitled addresses and APNs",

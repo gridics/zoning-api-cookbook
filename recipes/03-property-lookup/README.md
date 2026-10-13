@@ -7,6 +7,8 @@
 
 Resolve one property by address, APN, parcel ID, or coordinates inside an entitled county.
 
+Use this when the county and exact locator are already known. For a free-form address or APN without a county ID, use [Location Search](../18-location-search/) first. An interactive field uses suggest → retrieve; a one-off server request uses forward.
+
 ## API operations
 
 - `POST /v2/parcels/lookup`
@@ -85,6 +87,7 @@ These are cookbook safety defaults. Your current plan, capabilities, geography, 
 ## Important behavior
 
 Choose exactly one lookup form. The checked-in request uses an address; edit the recipe request or use the APN/parcel/coordinate variants described in `docs/request-reference.md`. A `409` means the locator was ambiguous; do not silently choose a result.
+The returned `data.id` is the parcel identifier for subsequent parcel calls. Keep the returned `place_id`; do not substitute an unrelated county ID.
 
 ## Expected result
 

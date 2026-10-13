@@ -13,6 +13,8 @@ npm run dev
 
 Fixture mode is the default. It makes no live zoning request and uses the same synthetic Location Search behavior as the other browser example.
 
+The address/APN field is interactive autocomplete: it suggests candidates and retrieves the selected one with the same search session. For a one-off server resolution without a picker, use [Location Search forward](../../recipes/18-location-search/) instead. The zoning panel is fixture-backed until your own server adapter is connected and verified against your entitled data.
+
 ## Live architecture
 
 Browser Location Search may use a scoped publishable **gpk_...** token when your Developer Portal account supports it. Secret **gk_...** keys must never enter Vite environment variables or browser JavaScript.
