@@ -636,6 +636,47 @@
         "title": "ParcelDebtHistoryResponse",
         "type": "object"
       },
+      "ParcelDesignation": {
+        "additionalProperties": false,
+        "description": "Literal source label and its aligned identifier, never inferred applicability.",
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "maxLength": 512,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "name": {
+            "maxLength": 4096,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "maxLength": 2048,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "ParcelDesignation",
+        "type": "object"
+      },
       "ParcelDetailMeta": {
         "additionalProperties": false,
         "properties": {
@@ -700,6 +741,16 @@
           },
           "identity": {
             "$ref": "#/components/schemas/ParcelIdentity"
+          },
+          "site_context": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ParcelSiteContext"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "required": [
@@ -1021,9 +1072,11 @@
                 "type": "null"
               }
             ],
+            "description": "Use data.id from lookup or a search row id. This is the Gridics group identifier, not the APN. Choose exactly one locator.",
             "title": "Parcel Id"
           },
           "place_id": {
+            "description": "Canonical entitled county ID returned by GET /v2/markets/{market_id}/places. Do not use an illustrative example ID.",
             "maxLength": 128,
             "minLength": 1,
             "title": "Place Id",
@@ -1142,6 +1195,163 @@
           "scope"
         ],
         "title": "ParcelSearchRequest",
+        "type": "object"
+      },
+      "ParcelSiteContext": {
+        "additionalProperties": false,
+        "properties": {
+          "abutting_lines": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "abutting_points": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "abutting_polygons": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "abutting_streets": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "flood_zones": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "historic_designations": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "historic_names": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "historic_types": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "intersects_water_body": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_bool_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "land_use_designations": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "related_flood_zones": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "related_lines": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "related_points": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "related_polygons": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "transit_routes": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "title": "ParcelSiteContext",
         "type": "object"
       },
       "ParcelTaxHistoryResponse": {
@@ -1597,6 +1807,43 @@
         "title": "ResourceValue[int]",
         "type": "object"
       },
+      "ResourceValue_list_ParcelDesignation__": {
+        "additionalProperties": false,
+        "properties": {
+          "freshness": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceFreshness"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "state": {
+            "$ref": "#/components/schemas/ResourceState"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ParcelDesignation"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "state"
+        ],
+        "title": "ResourceValue[list[ParcelDesignation]]",
+        "type": "object"
+      },
       "ResourceValue_list_float__": {
         "additionalProperties": false,
         "properties": {
@@ -1798,6 +2045,7 @@
                 "type": "null"
               }
             ],
+            "description": "Not currently available: the source filter is not yet proven.",
             "title": "Maximum Lot Area Sqft"
           },
           "minimum_lot_area_sqft": {
@@ -1810,6 +2058,7 @@
                 "type": "null"
               }
             ],
+            "description": "Not currently available: the source filter is not yet proven. Use address, APN or vacancy filters.",
             "title": "Minimum Lot Area Sqft"
           },
           "vacant": {
@@ -1824,6 +2073,7 @@
             "title": "Vacant"
           },
           "zoning_codes": {
+            "description": "Nonempty zoning-code filters are not currently available.",
             "items": {
               "type": "string"
             },
@@ -2072,6 +2322,63 @@
         "title": "ZoningDistrict",
         "type": "object"
       },
+      "ZoningLookupRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "maxLength": 256,
+                "minLength": 3,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "apn": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Apn"
+          },
+          "coordinates": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CoordinateLookup"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "place_id": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional entitled county to disambiguate a locator; normally omitted.",
+            "title": "Place Id"
+          }
+        },
+        "title": "ZoningLookupRequest",
+        "type": "object"
+      },
       "ZoningOverlay": {
         "additionalProperties": false,
         "properties": {
@@ -2123,6 +2430,111 @@
         "title": "ZoningOverlay",
         "type": "object"
       },
+      "ZoningParcelMeta": {
+        "additionalProperties": false,
+        "properties": {
+          "calculation_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calculation Status"
+          },
+          "calculation_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calculation Version"
+          },
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          },
+          "resource_state": {
+            "$ref": "#/components/schemas/ResourceState"
+          },
+          "source_updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Updated At"
+          }
+        },
+        "required": [
+          "request_id",
+          "resource_state"
+        ],
+        "title": "ZoningParcelMeta",
+        "type": "object"
+      },
+      "ZoningParcelResource": {
+        "additionalProperties": false,
+        "description": "Verified zoning facts grouped by their source building.",
+        "properties": {
+          "buildings": {
+            "items": {
+              "$ref": "#/components/schemas/ParcelBuildingProjection"
+            },
+            "maxItems": 100,
+            "title": "Buildings",
+            "type": "array"
+          },
+          "identity": {
+            "$ref": "#/components/schemas/ParcelIdentity"
+          },
+          "uses": {
+            "items": {
+              "$ref": "#/components/schemas/ParcelUseItem"
+            },
+            "maxItems": 100,
+            "title": "Uses",
+            "type": "array"
+          },
+          "uses_has_more": {
+            "title": "Uses Has More",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "identity",
+          "buildings",
+          "uses",
+          "uses_has_more"
+        ],
+        "title": "ZoningParcelResource",
+        "type": "object"
+      },
+      "ZoningParcelResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ZoningParcelResource"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ZoningParcelMeta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ],
+        "title": "ZoningParcelResponse",
+        "type": "object"
+      },
       "ZoningQueryMeta": {
         "properties": {
           "market_id": {
@@ -2151,6 +2563,7 @@
         "description": "A parcel identifier plus the explicit catalog scope used to authorize it.",
         "properties": {
           "group_id": {
+            "description": "Use the parcel result id or identifiers.group_id from lookup or search. Keep its returned geography; this is not an APN.",
             "examples": [
               "01HX7VQ8M2Y0"
             ],
@@ -2160,6 +2573,7 @@
             "type": "string"
           },
           "market_id": {
+            "description": "Entitled market ID returned by GET /v2/markets, containing the selected place.",
             "examples": [
               "market_miami_dade"
             ],
@@ -2169,6 +2583,7 @@
             "type": "string"
           },
           "place_id": {
+            "description": "Use the parcel result place_id; it must belong to the selected market.",
             "examples": [
               "place_miami"
             ],
@@ -3608,7 +4023,7 @@
         "x-gridics-product": "Parcel Lookup",
         "x-gridics-quota-metric": "standard_api_calls and parcel_result_rows",
         "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
-        "x-gridics-required-capability": "standard_parcel_access",
+        "x-gridics-required-capability": "parcel_search",
         "x-gridics-workflows": [
           "property lookup",
           "parcel ID lookup",
@@ -3730,22 +4145,23 @@
         ],
         "x-gridics-audience": "public",
         "x-gridics-billing-unit": "one request plus deduplicated returned rows",
-        "x-gridics-market-access": "Requires parcel_search capability and explicit entitled market/place scope.",
-        "x-gridics-plan-requirement": "Advanced parcel search capability on an active V2 plan.",
+        "x-gridics-market-access": "Requires parcel_search and explicit entitled scope; advanced features also require advanced_search.",
+        "x-gridics-plan-requirement": "Parcel access on an active V2 plan. Advanced features (filters, geometry, sorting, ranking or totals) also require advanced_search; source support is enforced separately.",
         "x-gridics-product": "Parcel Search",
-        "x-gridics-quota-metric": "parcel_search_units and parcel_result_rows",
+        "x-gridics-quota-metric": "standard_api_calls, advanced_searches when applicable, and parcel_result_rows",
         "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
         "x-gridics-required-capability": "parcel_search",
         "x-gridics-workflows": [
-          "parcel lookup",
-          "site selection",
-          "franchise candidate search",
+          "parcel search",
+          "supported field projection",
+          "vacancy filtering",
           "cursor pagination"
         ]
       }
     },
     "/v2/parcels/search-fields": {
       "get": {
+        "description": "Returns field types, units and selectable/filterable/sortable flags for the current caller. meta.resource_groups identifies supported detail includes, separate paginated history operations, required capabilities and explicit unavailable source/package categories. Discovery never grants county coverage or source permission; every execution independently validates current authority.",
         "operationId": "listParcelSearchFields",
         "parameters": [],
         "responses": {
@@ -3817,14 +4233,14 @@
             "ApiKeyAuth": []
           }
         ],
-        "summary": "List parcel-search fields",
+        "summary": "Discover parcel fields, resources and subscription restrictions",
         "tags": [
           "v2-parcels"
         ],
         "x-gridics-audience": "public",
         "x-gridics-billing-unit": "parcel_search_field_request",
         "x-gridics-market-access": "Field availability varies by market capability and entitlement.",
-        "x-gridics-plan-requirement": "Advanced parcel search; use after lookup and simple search when the plan includes it.",
+        "x-gridics-plan-requirement": "Parcel access; availability and supported operations are returned for each field.",
         "x-gridics-product": "Parcel Search",
         "x-gridics-quota-metric": "requests",
         "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
@@ -3845,7 +4261,6 @@
             "application/json": {
               "example": {
                 "filters": {
-                  "minimum_lot_area_sqft": 5000,
                   "vacant": true
                 },
                 "page_size": 25,
@@ -3940,7 +4355,7 @@
         "x-gridics-product": "Parcel Search",
         "x-gridics-quota-metric": "standard_api_calls and parcel_result_rows",
         "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
-        "x-gridics-required-capability": "standard_parcel_access",
+        "x-gridics-required-capability": "parcel_search",
         "x-gridics-workflows": [
           "county parcel search",
           "first integration",
@@ -3979,7 +4394,7 @@
             }
           },
           {
-            "description": "Optional response groups: geography, lot, buildings, frontages, zoning, uses, setbacks, and standards.",
+            "description": "Optional response groups: geography, lot, buildings, frontages, zoning, uses, setbacks, standards, and site_context.",
             "in": "query",
             "name": "include",
             "required": false,
@@ -3995,7 +4410,7 @@
                   "type": "null"
                 }
               ],
-              "description": "Optional response groups: geography, lot, buildings, frontages, zoning, uses, setbacks, and standards.",
+              "description": "Optional response groups: geography, lot, buildings, frontages, zoning, uses, setbacks, standards, and site_context.",
               "title": "Include"
             }
           },
@@ -4109,9 +4524,9 @@
         "x-gridics-product": "Parcel Detail",
         "x-gridics-quota-metric": "standard_api_calls and parcel_result_rows",
         "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
-        "x-gridics-required-capability": "standard_parcel_access",
+        "x-gridics-required-capability": "parcel_search",
         "x-gridics-workflows": [
-          "retrieve parcel identity",
+          "retrieve parcel identity from the id returned by lookup or search; pass its returned place_id",
           "select lot details",
           "select zoning and setbacks"
         ]
@@ -4673,6 +5088,252 @@
         ]
       }
     },
+    "/v2/parcels/{parcel_id}/zoning": {
+      "get": {
+        "operationId": "getParcelZoning",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "parcel_id",
+            "required": true,
+            "schema": {
+              "title": "Parcel Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "County ID returned with the parcel",
+            "in": "query",
+            "name": "place_id",
+            "required": true,
+            "schema": {
+              "description": "County ID returned with the parcel",
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Place Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoningParcelResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "The active subscription, permission, capability, or geography does not allow this operation."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Unknown or unauthorized parcel"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get zoning for one entitled parcel",
+        "tags": [
+          "v2-parcels"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "one standard request plus one parcel row",
+        "x-gridics-market-access": "Requires the parcel's entitled county and current zoning permission.",
+        "x-gridics-plan-requirement": "Parcel search and zoning query capabilities on an active V2 plan.",
+        "x-gridics-product": "Zoning",
+        "x-gridics-quota-metric": "standard_api_calls and parcel_result_rows",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "zoning_query",
+        "x-gridics-workflows": [
+          "known parcel zoning",
+          "districts and overlays",
+          "uses and standards"
+        ]
+      }
+    },
+    "/v2/zoning/lookup": {
+      "post": {
+        "operationId": "lookupZoning",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "address": "444 Brickell Ave, Miami, FL 33131"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/ZoningLookupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ZoningParcelResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Parcel search or zoning capability is not included"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "No entitled parcel matched"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Multiple entitled parcels matched; supply place_id to disambiguate"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Invalid locator or implicit county scope exceeds 25"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Resolve an address, APN, or coordinates to entitled zoning",
+        "tags": [
+          "v2-zoning"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "one standard request plus one parcel row",
+        "x-gridics-market-access": "Searches only current entitled counties; an optional county narrows ambiguity.",
+        "x-gridics-plan-requirement": "Parcel search and zoning query capabilities on an active V2 plan.",
+        "x-gridics-product": "Zoning",
+        "x-gridics-quota-metric": "standard_api_calls and parcel_result_rows",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "zoning_query",
+        "x-gridics-workflows": [
+          "address to zoning",
+          "APN to zoning",
+          "coordinates to zoning"
+        ]
+      }
+    },
     "/v2/zoning/query": {
       "post": {
         "operationId": "queryZoning",
@@ -4788,11 +5449,11 @@
         "x-gridics-market-access": "Unknown and unauthorized market/place scopes are identically hidden.",
         "x-gridics-plan-requirement": "Zoning query capability on an active V2 plan.",
         "x-gridics-product": "Zoning",
-        "x-gridics-quota-metric": "zoning_query_units",
+        "x-gridics-quota-metric": "standard_api_calls",
         "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
         "x-gridics-required-capability": "zoning_query",
         "x-gridics-workflows": [
-          "retrieve zoning",
+          "retrieve zoning using the parcel id as group_id and its correlated market_id and place_id",
           "inspect development capacity"
         ]
       }

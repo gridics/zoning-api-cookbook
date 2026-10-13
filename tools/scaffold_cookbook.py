@@ -37,6 +37,8 @@ recipes = [
     ("16", "mcp-tools", "Expose bounded MCP tools", "advanced", ["GET /v2/me", "GET /v2/markets", "POST /v2/parcels/lookup", "POST /v2/parcels/simple-search", "POST /v2/zoning/query"], "Run a read-only MCP-compatible JSON-RPC server with typed, allow-listed Gridics tools.", "Five Gridics calls per workflow, 10 search results, and two zoning enrichments by default."),
     ("17", "appraiser-zoning-lookup", "Appraiser zoning lookup", "business", ["POST /v2/parcels/lookup", "POST /v2/zoning/query"], "Resolve an appraisal subject by address/APN and report factual zoning with provenance and explicit unknowns.", "One lookup and one optional zoning operation; no uncertain paid retry."),
     ("18", "location-search", "Location Search API", "beginner", ["GET /v2/locations/suggest", "GET /v2/locations/retrieve/{gridics_id}", "GET /v2/locations/forward"], "Resolve free-form address/APN with suggest/retrieve or forward without a required county ID.", "One commercial unit per interactive session or forward request; HTTP rate limits count each request."),
+    ("19", "address-to-zoning", "Address to zoning", "beginner", ["POST /v2/zoning/lookup"], "Resolve an address or APN and retrieve available zoning in one request, without discovering a county ID.", "One zoning lookup request; account capability, geographic entitlement, and quota apply."),
+    ("20", "parcel-zoning", "Zoning for a known parcel", "beginner", ["GET /v2/parcels/{parcel_id}/zoning"], "Read the typed zoning resource for a known parcel in its entitled county.", "One parcel zoning request; account capability, geographic entitlement, and quota apply."),
 ]
 
 def write(relative: str, content: str) -> None:
@@ -51,7 +53,7 @@ manifest = {
         "default_base_url": "https://api.gridics.com",
         "authentication_header": "x-api-key",
         "contract_source": "contracts/openapi-v2.json",
-        "reviewed_on": "2026-10-05",
+        "reviewed_on": "2026-10-13",
     },
     "defaults": {
         "GRIDICS_MARKET_ID": "market_example",
@@ -97,6 +99,8 @@ steps_by_id = {
     "18": [step("suggest_1", "GET", "/v2/locations/suggest"), step("suggest_2", "GET", "/v2/locations/suggest"), step("retrieve", "GET", "/v2/locations/retrieve/{gridics_id}")],
     "17": [step("property", "POST", "/v2/parcels/lookup", lookup), step("zoning", "POST", "/v2/zoning/query", zoning, optional=True)],
     "16": [step("credential", "GET", "/v2/me")],
+    "19": [step("zoning", "POST", "/v2/zoning/lookup", {"address": "${GRIDICS_ADDRESS}"})],
+    "20": [step("zoning", "GET", "/v2/parcels/${GRIDICS_PARCEL_ID}/zoning", query={"place_id": "${GRIDICS_PLACE_ID}"})],
 }
 
 APPRAISER_GUIDANCE = """
@@ -188,6 +192,8 @@ for rid, slug, title, level, endpoints, outcome, usage in recipes:
         "15": "Customer rules classify each criterion as `meets`, `does_not_meet`, or `needs_review`. Missing or unavailable inputs always become `needs_review`.",
         "17": "Use GRIDICS_LOCATOR=address, apn or parcel_id. Resolve canonical IDs before zoning; keep unknowns explicit. Hosted /mcp and appraiser-zoning are documented separately and are not fixture verification.",
         "16": "Start the JSON-RPC server with the language runner's `--mcp` option. It supports MCP initialization, `tools/list`, and typed `tools/call` for allow-listed read-only operations. The API key stays in the server environment and never appears in tool schemas or results. This is an educational local adapter; use public Gridics documentation for any hosted integration. Never paste an API key into an LLM or hosted connection.",
+        "19": "Supply exactly one locator: address, APN, or coordinates. An ambiguous match returns 409; ask the user to choose a property instead of selecting one silently. A denied county or missing capability must remain an error. Preserve every returned building, district, use permission, source, unit, and unavailable value.",
+        "20": "Use the parcel ID and place ID returned by a successful authorized lookup. Preserve multiple buildings and districts, source provenance, use permissions, units, and unavailable states. Missing values are not negative zoning findings.",
     }.get(rid, "The same manifest drives every language port, so route, method, request body, bounds, and normalized output stay aligned.")
     intros = {
         "03": "Use this when the county and exact locator are already known. For a free-form address or APN without a county ID, use [Location Search](../18-location-search/) first. An interactive field uses suggest → retrieve; a one-off server request uses forward.",
@@ -196,6 +202,8 @@ for rid, slug, title, level, endpoints, outcome, usage in recipes:
         "08": "The example uses the verified vacancy equality filter and leaves `sort` empty. A field's returned value does not prove it can be filtered or sorted. Check `filter_caller_available`, supported operators, and `sortable` in the live field-discovery response before editing the request. Lot-size and zoning-code predicates, arbitrary sorting, and ranking are not advertised as available by this recipe.",
         "17": "This recipe uses the published county-scoped lookup because the subject county is known. For free-form intake, use [Location Search](../18-location-search/) first, inspect every returned candidate, and carry the selected canonical identifiers into zoning query. The report remains factual screening, not a formal zoning determination.",
         "18": "Choose **suggest → retrieve** for an interactive input where a person selects one suggestion. Choose **forward** for a one-off address or APN resolution with no selection session. Forward can return multiple features; inspect them instead of silently choosing the first. For an already known parcel and county, use [recipe 03](../03-property-lookup/).",
+        "19": "This is the shortest server-side zoning workflow. For an interactive address/APN field, use [Location Search](../18-location-search/) suggest → retrieve to let the user choose. Use Location Search forward when you need resolution without zoning. The older multi-step zoning query remains in [recipe 04](../04-zoning-query/).",
+        "20": "Use this when you already have a canonical parcel ID and its entitled place ID. For an address or APN, start with [recipe 19](../19-address-to-zoning/) instead.",
     }
     if rid == "18":
         curl_examples = ['```bash\n# Generate a UUIDv4 once for this interaction.\nSESSION_TOKEN=$(python3 -c "import uuid; print(uuid.uuid4())")\ncurl --fail-with-body --get "${GRIDICS_API_BASE_URL}/v2/locations/suggest" --header "x-api-key: ${GRIDICS_API_KEY}" --data-urlencode "q=100 Example Ave" --data-urlencode "session_token=${SESSION_TOKEN}" > suggestions.json\n# Inspect suggestions, then set GRIDICS_ID to the selected result.\ncat suggestions.json\n: "${GRIDICS_ID:?Set GRIDICS_ID to the suggestion selected by the user}"\ncurl --fail-with-body --get "${GRIDICS_API_BASE_URL}/v2/locations/retrieve/${GRIDICS_ID}" --header "x-api-key: ${GRIDICS_API_KEY}" --data-urlencode "session_token=${SESSION_TOKEN}"\n# Separate one-off lookup (one commercial unit):\ncurl --fail-with-body --get "${GRIDICS_API_BASE_URL}/v2/locations/forward" --header "x-api-key: ${GRIDICS_API_KEY}" --data-urlencode "q=100 Example Ave"\n```']
@@ -245,7 +253,7 @@ The command exits `0` only when every required step succeeds. Output includes th
 
 From the repository root, run `python3 tests/validate_repository.py` and the language command documented in [CONTRIBUTING.md](../../CONTRIBUTING.md). Normal tests use synthetic fixtures and make no paid requests.
 """
-    if rid == "18":
+    if rid in {"18", "19"}:
         readme = readme.replace("replace the synthetic Market, Place, parcel, and address values with IDs returned for your Organization", "configure a free-form address/APN query; no Place or Market ID is required")
     if rid in {"03", "17"}:
         readme += "\nFor free-form address/APN search without a required county ID, start with [recipe 18](../18-location-search/README.md).\n"

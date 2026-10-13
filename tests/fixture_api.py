@@ -10,6 +10,14 @@ from urllib.parse import urlparse, parse_qs
 FIXTURE_KEY = "fixture_key_not_secret"
 
 
+def zoning_resource() -> dict:
+    """A synthetic minimal response shaped like the public zoning resource."""
+    return {
+        "data": {"identity": {"id": "parcel_example_001", "place_id": "place_example_county", "address": "100 Example Ave", "apn": "000000000001"}, "buildings": [], "uses": [], "uses_has_more": False},
+        "meta": {"request_id": "fixture-request-001", "resource_state": "no_records"},
+    }
+
+
 class Handler(BaseHTTPRequestHandler):
     server_version = "GridicsCookbookFixture/1.0"
 
@@ -63,6 +71,11 @@ class Handler(BaseHTTPRequestHandler):
                 {"name": "parcel.lot_area", "filterable": True, "selectable": True, "sortable": True, "units": ["sqft", "acre"], "availability": "market_dependent"},
                 {"name": "development.max_buildable_area", "filterable": True, "selectable": True, "availability": "enabled" if getattr(self.server, "capacity_available", False) else "not_yet_proven", "caller_available": getattr(self.server, "capacity_available", False), "required_capability": "capacity_fields"}
             ], "meta": {"request_id": "fixture-request-001"}})
+        elif path == "/v2/parcels/parcel_example_001/zoning":
+            if parse_qs(urlparse(self.path).query).get("place_id") != ["place_example_county"]:
+                self._json(404, {"status": "ERROR", "messages": ["parcel not found in requested fixture county"]})
+            else:
+                self._json(200, zoning_resource())
         else:
             self._json(404, {"status": "ERROR", "messages": ["fixture route not found"]})
 
@@ -76,6 +89,13 @@ class Handler(BaseHTTPRequestHandler):
                 self._json(404, {"status": "ERROR", "messages": [f"parcel not found in requested fixture county {body.get('place_id')}"]})
                 return
             self._json(200, {"data": {"id": "parcel_example_001", "group_id": "parcel_example_001", "place_id": "place_example_county", "market_ids": ["market_example"], "apn": str(body.get("apn") or "000000000001"), "address": "100 Example Ave", "lot_area": 7500, "vacant": True, "zoning_code": "EX-1"}, "meta": {"request_id": "fixture-request-001", "restricted_by_entitlement": True}})
+        elif path == "/v2/zoning/lookup":
+            if sum(bool(body.get(locator)) for locator in ("address", "apn", "coordinates")) != 1:
+                self._json(422, {"status": "ERROR", "messages": ["provide one locator"]})
+            elif body.get("place_id") not in (None, "place_example_county"):
+                self._json(404, {"status": "ERROR", "messages": ["parcel not found in requested fixture county"]})
+            else:
+                self._json(200, zoning_resource())
         elif path == "/v2/parcels/simple-search":
             if body.get("filters", {}).get("minimum_lot_area_sqft") is not None:
                 self._json(422, {"status": "ERROR", "messages": ["field_not_available"]})

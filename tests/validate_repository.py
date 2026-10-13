@@ -11,8 +11,8 @@ manifest = json.loads((ROOT / "recipes/manifest.json").read_text())
 languages = {"python": "main.py", "nodejs": "main.mjs", "typescript": "main.ts", "php": "main.php", "csharp": "Program.cs", "java": "Main.java", "go": "main.go"}
 errors: list[str] = []
 
-if len(manifest["recipes"]) != 18:
-    errors.append(f"expected 18 recipes, got {len(manifest['recipes'])}")
+if len(manifest["recipes"]) != 20:
+    errors.append(f"expected 20 recipes, got {len(manifest['recipes'])}")
 
 for recipe in manifest["recipes"]:
     directory = ROOT / "recipes" / f"{recipe['id']}-{recipe['slug']}"
@@ -39,7 +39,7 @@ for path in ROOT.rglob("*"):
         if banned in text and path.suffix not in {".md"}: errors.append(f"private implementation term {banned!r} in executable {path.relative_to(ROOT)}")
 
 count = sum(1 for recipe in manifest["recipes"] for language in languages if (ROOT / "recipes" / f"{recipe['id']}-{recipe['slug']}" / language / languages[language]).exists())
-if count != 126: errors.append(f"expected 126 language entry points, got {count}")
+if count != 140: errors.append(f"expected 140 language entry points, got {count}")
 
 if errors:
     print("Repository validation failed:")
