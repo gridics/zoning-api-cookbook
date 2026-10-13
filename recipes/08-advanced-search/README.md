@@ -7,6 +7,8 @@
 
 Discover released fields before submitting a typed, projected search; add sorting only where released.
 
+The example uses the verified vacancy equality filter and leaves `sort` empty. A field's returned value does not prove it can be filtered or sorted. Check `filter_caller_available`, supported operators, and `sortable` in the live field-discovery response before editing the request. Lot-size and zoning-code predicates, arbitrary sorting, and ranking are not advertised as available by this recipe.
+
 ## API operations
 
 - `GET /v2/parcels/search-fields`

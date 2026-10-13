@@ -8,6 +8,8 @@ Publishable `gpk_...` tokens are intended for browser use and are observable. Ne
 
 Type an address or APN (three characters minimum), use arrows to navigate and Enter to select, Escape to dismiss, or the clear button to start over. Rows show street, place/county, and APN match indicators. Selection retrieves canonical property details. The demo uses a 275 ms debounce, AbortController, stale-response checks, and accessible combobox/listbox semantics. The query does not require a county ID.
 
+This interactive example uses suggest → retrieve. A one-off address/APN call with no user selection uses [forward](../../recipes/18-location-search/) instead; inspect multiple returned features before choosing a property.
+
 One UUIDv4 groups successive suggest requests and the selected retrieve. Retrieve, clear, or a session error starts a fresh interaction. Each session consumes one `location_searches` unit; each HTTP request still counts for rate limiting. A successful forward request is one unit and belongs in [server recipe 18](../../recipes/18-location-search/). This browser demo never automatically retries an uncertain paid request.
 
 Use `errorStatus: 401`, `403`, `409`, `422`, `429`, `502`, or `503` in fixture config for safe error demonstrations. No raw provider error is shown. `client.mjs` is the public adapter and interaction controller; `app.mjs` contains the framework-neutral DOM wiring. The [React example](../react-location-search/) uses the same public adapter and interaction controller with ordinary React.

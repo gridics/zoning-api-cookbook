@@ -7,6 +7,8 @@
 
 Resolve an appraisal subject by address/APN and report factual zoning with provenance and explicit unknowns.
 
+This recipe uses the published county-scoped lookup because the subject county is known. For free-form intake, use [Location Search](../18-location-search/) first, inspect every returned candidate, and carry the selected canonical identifiers into zoning query. The report remains factual screening, not a formal zoning determination.
+
 ## API operations
 
 - `POST /v2/parcels/lookup`

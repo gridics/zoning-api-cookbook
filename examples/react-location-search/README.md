@@ -27,4 +27,6 @@ Publishable tokens are observable in browser code. Never use a secret `gk_...` A
 
 The same session groups suggest requests and the selected retrieve. Completion, clear or session failure starts a new interaction. One interactive search consumes one `location_searches` unit; individual requests remain rate-limited. A successful forward request consumes one unit and is demonstrated separately in [recipe 18](../../recipes/18-location-search/). Uncertain paid requests are never automatically retried.
 
+Use this component for an interactive picker. Use forward for a one-off address/APN lookup without a picker, and review all returned candidates before requesting zoning.
+
 Set `VITE_FIXTURE_ERROR_STATUS=429` or `503` for safe quota/service demonstrations. See the [plain browser example](../browser-location-autocomplete/), [configuration guide](../../docs/location-search.md) and [compatibility notes](../../docs/compatibility.md).

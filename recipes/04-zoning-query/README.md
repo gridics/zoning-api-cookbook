@@ -7,6 +7,8 @@
 
 Retrieve the current public zoning response for a parcel already resolved by Gridics.
 
+This is the published multi-step zoning path. Resolve an address or APN with [recipe 18](../18-location-search/) or an exact parcel with [recipe 03](../03-property-lookup/), review ambiguity, then use the returned identifiers. The request body retains `group_id` because that is the current public query contract; the value comes from the resolved parcel, not a manually constructed backend ID.
+
 ## API operations
 
 - `POST /v2/zoning/query`
@@ -84,7 +86,7 @@ These are cookbook safety defaults. Your current plan, capabilities, geography, 
 
 ## Important behavior
 
-The same manifest drives every language port, so route, method, request body, bounds, and normalized output stay aligned.
+The same manifest drives every language port, so route, method, request body, bounds, and normalized output stay aligned. A zoning query can return multiple buildings or districts; preserve them and source links. For detailed use permissions, inspect the published parcel uses operation when your plan supports it. Missing source values are unknown, never a denial or a negative zoning determination.
 
 ## Expected result
 
