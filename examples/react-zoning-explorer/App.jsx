@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { LocationSearchTextbox } from '../react-location-search/LocationSearchTextbox.jsx';
 import { createClient } from '../browser-location-autocomplete/client.mjs';
 import { createZoningClient } from './zoning-client.mjs';
@@ -20,18 +20,44 @@ export function App({ apiClient = defaultLocationClient, zoningClient = defaultZ
   const [zoning, setZoning] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const requestVersion = useRef(0);
+  const pendingRequest = useRef(null);
+
+  useEffect(() => () => {
+    requestVersion.current += 1;
+    pendingRequest.current?.abort();
+  }, []);
+
+  function clearProperty() {
+    requestVersion.current += 1;
+    pendingRequest.current?.abort();
+    pendingRequest.current = null;
+    setProperty(null);
+    setZoning(null);
+    setError('');
+    setLoading(false);
+  }
 
   async function onResolved(next) {
+    const version = ++requestVersion.current;
+    pendingRequest.current?.abort();
+    const controller = new AbortController();
+    pendingRequest.current = controller;
+    const isCurrent = () => requestVersion.current === version && !controller.signal.aborted;
     setProperty(next);
     setZoning(null);
     setError('');
     setLoading(true);
     try {
-      setZoning(await zoningClient.getZoning(next));
+      const result = await zoningClient.getZoning(next, { signal: controller.signal });
+      if (isCurrent()) setZoning(result);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Unable to load zoning.');
+      if (isCurrent()) setError(e instanceof Error ? e.message : 'Unable to load zoning.');
     } finally {
-      setLoading(false);
+      if (isCurrent()) {
+        pendingRequest.current = null;
+        setLoading(false);
+      }
     }
   }
 
@@ -45,7 +71,7 @@ export function App({ apiClient = defaultLocationClient, zoningClient = defaultZ
     </header>
 
     <section className="search-card">
-      <LocationSearchTextbox apiClient={apiClient} onResolved={onResolved} onClear={() => { setProperty(null); setZoning(null); setError(''); }} />
+      <LocationSearchTextbox apiClient={apiClient} onResolved={onResolved} onClear={clearProperty} />
     </section>
 
     <div className="grid">

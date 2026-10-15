@@ -28,3 +28,12 @@ The server-side building blocks are [recipe 03](../../recipes/03-property-lookup
 A polished browser experience should not require exposing a privileged API key. The UI demonstrates composition and capability-aware rendering while the cookbook's seven server languages demonstrate authenticated API calls.
 
 Never convert missing zoning or development fields into zero, false, or a legal conclusion.
+
+## Changing or clearing a selection
+
+Only the current property selection can update its zoning panel. Changing or
+clearing a selection cancels the pending browser request and discards late
+results or errors, including from custom adapters that cannot cancel their
+underlying work. Cancellation does not reverse work already completed by your
+server. Clearing also resets the loading state; unmounting stops the pending
+browser request.

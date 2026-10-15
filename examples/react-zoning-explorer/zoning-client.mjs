@@ -17,11 +17,13 @@ const FIXTURE = {
 
 export function createZoningClient({ fixture = true, proxyUrl = '' } = {}) {
   return {
-    async getZoning(property) {
+    async getZoning(property, { signal } = {}) {
+      if (signal?.aborted) throw new DOMException('Zoning request aborted', 'AbortError');
       if (fixture) return structuredClone(FIXTURE);
       if (!proxyUrl) throw new Error('Set VITE_ZONING_PROXY_URL to a server-side adapter for live zoning.');
       const response = await fetch(proxyUrl, {
         method: 'POST',
+        signal,
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
           parcel_id: property?.properties?.parcel_id ?? null,
