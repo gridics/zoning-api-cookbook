@@ -21,6 +21,17 @@ Gridics is designed for applications that need structured property and zoning in
 - **Location Search** — add address/APN suggest, retrieve, and forward search to an application.
 - **AI and MCP** — expose bounded Gridics tools to AI applications and agent workflows without putting API keys in prompts.
 
+## See a working browser example
+
+The [React Zoning Explorer](examples/react-zoning-explorer/) resolves a selected
+address or APN and shows the parcel beside its zoning information. Run its
+synthetic demo without an account or API key, then connect your own server adapter
+when you are ready to use entitled live data.
+
+![Synthetic Zoning Explorer preview showing property identity beside zoning facts.](examples/react-zoning-explorer/preview.png)
+
+*Preview uses synthetic data. The zoning panel is explicitly labelled and does not represent a live zoning determination.*
+
 ## Build with Gridics
 
 | I want to... | Start here |
