@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       recipe:
-        description: Bounded recipe or complete eighteen-recipe matrix
+        description: Bounded recipe or complete twenty-recipe matrix
         required: true
         default: '01'
         type: choice
-        options: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', all]
+        options: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', all]
 
 permissions:
   contents: read
@@ -19,6 +19,7 @@ concurrency:
 
 jobs:
   verify:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: production-verification
     timeout-minutes: 20

@@ -32,7 +32,7 @@ curl --fail-with-body --request POST \
   --url "${GRIDICS_API_BASE_URL}/v2/parcels/search" \
   --header "x-api-key: ${GRIDICS_API_KEY}" \
   --header "Content-Type: application/json" \
-  --data "{\"scope\":{\"place_ids\":[\"${GRIDICS_PLACE_ID}\"]},\"filters\":{\"all\":[{\"field\":\"parcel.vacant\",\"operator\":\"eq\",\"value\":true}]},\"fields\":[\"parcel.id\",\"parcel.address\",\"parcel.lot_area\",\"zoning.code\"],\"sort\":[],\"include_total\":false,\"page_size\":10}"
+  --data "{\"scope\":{\"place_ids\":[\"${GRIDICS_PLACE_ID}\"]},\"filters\":{\"all\":[{\"field\":\"parcel.vacant\",\"operator\":\"eq\",\"value\":true}]},\"fields\":[\"parcel.id\",\"parcel.address\",\"parcel.lot_area\"],\"sort\":[],\"include_total\":false,\"page_size\":10}"
 ```
 
 ## Run a port

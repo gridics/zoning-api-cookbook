@@ -6,7 +6,7 @@ Use Gridics to resolve properties, retrieve parcel-specific zoning, search and s
 
 [Create a Developer account](https://developer.gridics.com/get-started) · [Developer cookbook hub](https://developer.gridics.com/cookbook) · [Gridics Zoning Data API](https://gridics.com/zoning-data-api/) · [Browse the API contract](contracts/openapi-v2.json) · [Choose a use case](#build-with-gridics)
 
-> **Verification status:** published as a preview cookbook. All seven language implementations pass credential-free fixture tests. End-to-end production acceptance and ordinary developer onboarding are still incomplete; examples are not guaranteed to work for every plan or geography. Location Search remains **preview** until suggest/retrieve/forward and the seven-language production matrix pass. Fixture success is not production verification.
+> **Verification status:** published as a preview cookbook. All seven language implementations pass credential-free fixture tests. End-to-end production acceptance and ordinary developer onboarding are still incomplete; examples are not guaranteed to work for every plan or geography. Location Search remains **preview** until suggest/retrieve/forward and the seven-language production matrix pass. Fixture success is not production verification. See the [recipe verification status](docs/verification-status.md) for the latest local audit.
 
 ## What can you build?
 

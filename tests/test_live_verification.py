@@ -24,6 +24,17 @@ class LiveVerificationTests(unittest.TestCase):
         self.assertIn("'18'", workflow)
         self.assertIn("GRIDICS_LOCATION_QUERY: ${{ vars.GRIDICS_LOCATION_QUERY }}", workflow)
 
+    def test_every_advertised_recipe_is_individually_selectable(self):
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / ".github/workflows/live-verification.yml").read_text()
+        manifest = json.loads((root / "recipes/manifest.json").read_text())
+        for recipe in manifest["recipes"]:
+            with self.subTest(recipe=recipe["id"]):
+                self.assertIn("'" + recipe["id"] + "'", workflow)
+        self.assertIn("environment: production-verification", workflow)
+        self.assertIn("if: github.ref == 'refs/heads/main'", workflow)
+        self.assertIn("max-parallel: 2", workflow)
+
     def test_failure_metadata_retains_only_http_codes(self):
         raw = json.dumps({"results": [{"http_status": 403, "message": "private provider response", "data": "secret"},
                                      {"http_status": "secret"}]})

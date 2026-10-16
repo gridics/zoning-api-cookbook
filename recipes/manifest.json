@@ -106,8 +106,7 @@
               "parcel.apn",
               "parcel.address",
               "parcel.lot_area",
-              "parcel.vacant",
-              "zoning.code"
+              "parcel.vacant"
             ]
           }
         }
@@ -164,8 +163,7 @@
               "parcel.apn",
               "parcel.address",
               "parcel.lot_area",
-              "parcel.vacant",
-              "zoning.code"
+              "parcel.vacant"
             ]
           }
         }
@@ -199,8 +197,7 @@
               "parcel.apn",
               "parcel.address",
               "parcel.lot_area",
-              "parcel.vacant",
-              "zoning.code"
+              "parcel.vacant"
             ]
           }
         }
@@ -263,8 +260,7 @@
             "fields": [
               "parcel.id",
               "parcel.address",
-              "parcel.lot_area",
-              "zoning.code"
+              "parcel.lot_area"
             ],
             "sort": [],
             "include_total": false,
@@ -306,8 +302,7 @@
             "fields": [
               "parcel.id",
               "parcel.address",
-              "parcel.lot_area",
-              "zoning.code"
+              "parcel.lot_area"
             ],
             "sort": [],
             "include_total": false,
@@ -369,8 +364,7 @@
               "parcel.apn",
               "parcel.address",
               "parcel.lot_area",
-              "parcel.vacant",
-              "zoning.code"
+              "parcel.vacant"
             ]
           }
         },
@@ -386,8 +380,7 @@
               "parcel.apn",
               "parcel.address",
               "parcel.lot_area",
-              "parcel.vacant",
-              "zoning.code"
+              "parcel.vacant"
             ],
             "apn": "${GRIDICS_APN}"
           }
@@ -434,7 +427,6 @@
               "parcel.id",
               "parcel.address",
               "parcel.lot_area",
-              "zoning.code",
               "development.max_buildable_area"
             ],
             "sort": [],
@@ -484,8 +476,7 @@
             "fields": [
               "parcel.id",
               "parcel.address",
-              "parcel.lot_area",
-              "zoning.code"
+              "parcel.lot_area"
             ],
             "sort": [],
             "include_total": false,
@@ -521,8 +512,7 @@
               "parcel.apn",
               "parcel.address",
               "parcel.lot_area",
-              "parcel.vacant",
-              "zoning.code"
+              "parcel.vacant"
             ]
           }
         },
@@ -565,8 +555,7 @@
               "parcel.apn",
               "parcel.address",
               "parcel.lot_area",
-              "parcel.vacant",
-              "zoning.code"
+              "parcel.vacant"
             ]
           }
         }
@@ -599,8 +588,7 @@
               "parcel.apn",
               "parcel.address",
               "parcel.lot_area",
-              "parcel.vacant",
-              "zoning.code"
+              "parcel.vacant"
             ]
           }
         },
@@ -666,8 +654,7 @@
               "parcel.apn",
               "parcel.address",
               "parcel.lot_area",
-              "parcel.vacant",
-              "zoning.code"
+              "parcel.vacant"
             ]
           }
         },
