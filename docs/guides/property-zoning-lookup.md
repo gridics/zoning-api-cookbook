@@ -4,7 +4,7 @@ The published V2 contract supports a one-request address/APN-to-zoning lookup. T
 
 ## Start with zoning by address or APN
 
-Call `POST /v2/zoning/lookup` with one locator, for example `{"address":"100 Example Ave"}`. No county ID is needed for the usual case. A 409 ambiguity requires a user choice; do not silently pick one property. [Recipe 19](../../recipes/19-address-to-zoning/) has seven language ports. Fixture verification is complete; live production behavior has not been verified by this cookbook.
+Call `POST /v2/zoning/lookup` with one locator, for example `{"address":"100 Example Ave, Example City, FL 00000"}`. No county ID is needed for the usual case. A 409 ambiguity requires a user choice; do not silently pick one property. [Recipe 19](../../recipes/19-address-to-zoning/) has seven language ports. Fixture verification is complete; live production behavior has not been verified by this cookbook.
 
 ## Pick the resolver
 
@@ -23,3 +23,5 @@ For a known parcel, call `GET /v2/parcels/{parcel_id}/zoning` with its entitled 
 For additional available parcel details and paginated use permissions, inspect the public [OpenAPI contract](../../contracts/openapi-v2.json) and your account's field discovery response. Do not treat an omitted field as “not permitted.”
 
 The [appraiser example](../../recipes/17-appraiser-zoning-lookup/) shows a factual subject-property summary with provenance and explicit unknowns.
+
+Use the returned parcel `id` or `identifiers.group_id` as `group_id` for recipe 04, with its returned county and matching market. Basic parcel examples request parcel fields only; add zoning fields only after field discovery confirms caller availability.

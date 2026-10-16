@@ -24,7 +24,7 @@ curl --fail-with-body --request POST \
   --url "${GRIDICS_API_BASE_URL}/v2/parcels/search" \
   --header "x-api-key: ${GRIDICS_API_KEY}" \
   --header "Content-Type: application/json" \
-  --data "{\"scope\":{\"place_ids\":[\"${GRIDICS_PLACE_ID}\"]},\"filters\":{\"all\":[{\"field\":\"parcel.vacant\",\"operator\":\"eq\",\"value\":true}]},\"fields\":[\"parcel.id\",\"parcel.address\",\"parcel.lot_area\",\"zoning.code\"],\"sort\":[],\"include_total\":false,\"page_size\":10,\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-80.2,25.75],[-80.19,25.75],[-80.19,25.76],[-80.2,25.76],[-80.2,25.75]]]}}"
+  --data "{\"scope\":{\"place_ids\":[\"${GRIDICS_PLACE_ID}\"]},\"filters\":{\"all\":[{\"field\":\"parcel.vacant\",\"operator\":\"eq\",\"value\":true}]},\"fields\":[\"parcel.id\",\"parcel.address\",\"parcel.lot_area\"],\"sort\":[],\"include_total\":false,\"page_size\":10,\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[-80.2,25.75],[-80.19,25.75],[-80.19,25.76],[-80.2,25.76],[-80.2,25.75]]]}}"
 ```
 
 ## Run a port

@@ -74,10 +74,10 @@ def step(name, method, path, body=None, query=None, optional=False):
     if optional: item["optional"] = True
     return item
 
-lookup = {"place_id": "${GRIDICS_PLACE_ID}", "address": {"street": "${GRIDICS_ADDRESS}", "postal_code": "${GRIDICS_POSTAL_CODE}"}, "fields": ["parcel.id", "parcel.apn", "parcel.address", "parcel.lot_area", "parcel.vacant", "zoning.code"]}
+lookup = {"place_id": "${GRIDICS_PLACE_ID}", "address": {"street": "${GRIDICS_ADDRESS}", "postal_code": "${GRIDICS_POSTAL_CODE}"}, "fields": ["parcel.id", "parcel.apn", "parcel.address", "parcel.lot_area", "parcel.vacant"]}
 zoning = {"market_id": "${GRIDICS_MARKET_ID}", "place_id": "${GRIDICS_PLACE_ID}", "group_id": "${GRIDICS_PARCEL_ID}"}
-simple = {"place_ids": ["${GRIDICS_PLACE_ID}"], "filters": {"vacant": True}, "page_size": 10, "fields": ["parcel.id", "parcel.apn", "parcel.address", "parcel.lot_area", "parcel.vacant", "zoning.code"]}
-advanced = {"scope": {"place_ids": ["${GRIDICS_PLACE_ID}"]}, "filters": {"all": [{"field": "parcel.vacant", "operator": "eq", "value": True}]}, "fields": ["parcel.id", "parcel.address", "parcel.lot_area", "zoning.code"], "sort": [], "include_total": False, "page_size": 10}
+simple = {"place_ids": ["${GRIDICS_PLACE_ID}"], "filters": {"vacant": True}, "page_size": 10, "fields": ["parcel.id", "parcel.apn", "parcel.address", "parcel.lot_area", "parcel.vacant"]}
+advanced = {"scope": {"place_ids": ["${GRIDICS_PLACE_ID}"]}, "filters": {"all": [{"field": "parcel.vacant", "operator": "eq", "value": True}]}, "fields": ["parcel.id", "parcel.address", "parcel.lot_area"], "sort": [], "include_total": False, "page_size": 10}
 polygon = {**advanced, "geometry": {"type": "Polygon", "coordinates": [[[-80.20, 25.75], [-80.19, 25.75], [-80.19, 25.76], [-80.20, 25.76], [-80.20, 25.75]]]}}
 
 steps_by_id = {
@@ -254,7 +254,7 @@ The command exits `0` only when every required step succeeds. Output includes th
 From the repository root, run `python3 tests/validate_repository.py` and the language command documented in [CONTRIBUTING.md](../../CONTRIBUTING.md). Normal tests use synthetic fixtures and make no paid requests.
 """
     if rid in {"18", "19"}:
-        readme = readme.replace("replace the synthetic Market, Place, parcel, and address values with IDs returned for your Organization", "configure a free-form address/APN query; no Place or Market ID is required")
+        readme = readme.replace("replace the synthetic Market, Place, parcel, and address values with IDs returned for your Organization", "configure a full address including city, state and postal code (or an APN with sufficient geography); no Place or Market ID is required for a sufficiently specific address")
     if rid in {"03", "17"}:
         readme += "\nFor free-form address/APN search without a required county ID, start with [recipe 18](../18-location-search/README.md).\n"
     if rid == "18":

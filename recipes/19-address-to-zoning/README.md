@@ -15,7 +15,7 @@ This is the shortest server-side zoning workflow. For an interactive address/APN
 
 ## Before you run it
 
-Complete the repository [Getting started](../../README.md#get-an-api-key), copy `.env.example` to `.env`, and configure a free-form address/APN query; no Place or Market ID is required. The examples never discover an ID and then assume that it grants access.
+Complete the repository [Getting started](../../README.md#get-an-api-key), copy `.env.example` to `.env`, and configure a full address including city, state and postal code (or an APN with sufficient geography); no Place or Market ID is required for a sufficiently specific address. The examples never discover an ID and then assume that it grants access.
 
 ## cURL
 

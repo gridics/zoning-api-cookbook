@@ -26,7 +26,7 @@ curl --fail-with-body --request POST \
   --url "${GRIDICS_API_BASE_URL}/v2/parcels/simple-search" \
   --header "x-api-key: ${GRIDICS_API_KEY}" \
   --header "Content-Type: application/json" \
-  --data "{\"place_ids\":[\"${GRIDICS_PLACE_ID}\"],\"filters\":{\"vacant\":true},\"page_size\":10,\"fields\":[\"parcel.id\",\"parcel.apn\",\"parcel.address\",\"parcel.lot_area\",\"parcel.vacant\",\"zoning.code\"]}"
+  --data "{\"place_ids\":[\"${GRIDICS_PLACE_ID}\"],\"filters\":{\"vacant\":true},\"page_size\":10,\"fields\":[\"parcel.id\",\"parcel.apn\",\"parcel.address\",\"parcel.lot_area\",\"parcel.vacant\"]}"
 ```
 
 ## Run a port
