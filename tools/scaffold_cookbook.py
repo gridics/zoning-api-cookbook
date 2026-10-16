@@ -253,7 +253,9 @@ The command exits `0` only when every required step succeeds. Output includes th
 
 From the repository root, run `python3 tests/validate_repository.py` and the language command documented in [CONTRIBUTING.md](../../CONTRIBUTING.md). Normal tests use synthetic fixtures and make no paid requests.
 """
-    if rid in {"18", "19"}:
+    if rid == "18":
+        readme = readme.replace("replace the synthetic Market, Place, parcel, and address values with IDs returned for your Organization", "configure a free-form address/APN query; no Place or Market ID is required")
+    if rid == "19":
         readme = readme.replace("replace the synthetic Market, Place, parcel, and address values with IDs returned for your Organization", "configure a full address including city, state and postal code (or an APN with sufficient geography); no Place or Market ID is required for a sufficiently specific address")
     if rid in {"03", "17"}:
         readme += "\nFor free-form address/APN search without a required county ID, start with [recipe 18](../18-location-search/README.md).\n"
