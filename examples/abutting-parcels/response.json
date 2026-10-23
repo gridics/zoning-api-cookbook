@@ -1,0 +1,81 @@
+{
+  "data": {
+    "identity": {
+      "id": "subject_example",
+      "place_id": "place_example_county",
+      "centroid": {
+        "type": "Point",
+        "coordinates": [
+          -80,
+          25
+        ]
+      },
+      "abutting_parcel_ids": [
+        "neighbor_north",
+        "neighbor_east"
+      ]
+    },
+    "geography": null,
+    "existing_building_summary": null,
+    "site_context": null,
+    "buildings": [],
+    "abutting": [
+      {
+        "identity": {
+          "id": "neighbor_north",
+          "place_id": "place_example_county",
+          "centroid": {
+            "type": "Point",
+            "coordinates": [
+              -80,
+              25.001
+            ]
+          },
+          "direction": "N",
+          "bearing_degrees": 0,
+          "direction_state": "available"
+        },
+        "buildings": [
+          {
+            "id": "1",
+            "zoning": {
+              "districts": [
+                {
+                  "code": "EXAMPLE-R",
+                  "description": "Synthetic residential district"
+                }
+              ]
+            }
+          }
+        ],
+        "zoning_state": "available"
+      },
+      {
+        "identity": {
+          "id": "neighbor_east",
+          "place_id": "place_example_county",
+          "centroid": {
+            "type": "Point",
+            "coordinates": [
+              -79.999,
+              25
+            ]
+          },
+          "direction": "E",
+          "bearing_degrees": 89.9998,
+          "direction_state": "available"
+        },
+        "buildings": [],
+        "zoning_state": "no_records"
+      }
+    ]
+  },
+  "meta": {
+    "request_id": "synthetic-example",
+    "included_groups": [],
+    "selected_fields": [],
+    "resource_states": {
+      "abutting": "available"
+    }
+  }
+}
