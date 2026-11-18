@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -9,7 +10,19 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 manifest = json.loads((ROOT / "recipes/manifest.json").read_text())
 openapi = json.loads((ROOT / "contracts/openapi-v2.json").read_text())
+parser = argparse.ArgumentParser(description="Validate the bundled Public API contract.")
+parser.add_argument("--published-spec", type=Path, help="Compare with a downloaded Developer Portal OpenAPI file")
+args = parser.parse_args()
 errors = []
+
+if args.published_spec and openapi != json.loads(args.published_spec.read_text()):
+    errors.append("snapshot differs from the published Developer Portal OpenAPI")
+
+# Standalone examples are not listed in the multilingual recipe manifest.
+for path in ("/v2/parcels/{parcel_id}", "/v2/parcels/{parcel_id}/abutting"):
+    operation = openapi.get("paths", {}).get(path, {}).get("get", {})
+    if operation.get("x-gridics-audience") != "public":
+        errors.append(f"missing public example operation GET {path}")
 
 if openapi.get("servers") != [{"url": "https://api.gridics.com"}]:
     errors.append("snapshot server does not match the documented production public API origin")

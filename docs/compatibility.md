@@ -10,4 +10,17 @@ Normal CI verifies requests against synthetic responses. Fixture success proves 
 
 Every selected recipe is bounded to a finite request budget. An unavailable capability remains explicit and is not reported as verified. Live verification should be rerun whenever public API behavior or cookbook request shapes materially change.
 
+## Check the OpenAPI snapshot
+
+Compare the bundled snapshot with the Developer Portal before updating recipes:
+
+```sh
+spec=$(mktemp)
+curl --fail --silent --show-error https://developer.gridics.com/openapi/v2/public.json -o "$spec" &&
+  python3 tests/validate_contract.py --published-spec "$spec"
+rm -f "$spec"
+```
+
+If the comparison reports a difference, review the published contract changes and refresh the snapshot and affected examples together.
+
 V1 is outside this cookbook. Adding V1 examples requires a separate versioned directory and compatibility policy.
