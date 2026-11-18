@@ -1,6 +1,415 @@
 {
   "components": {
     "schemas": {
+      "AbuttingBoundarySetback": {
+        "additionalProperties": false,
+        "description": "A future source-backed requirement for a classified boundary facing the subject.",
+        "properties": {
+          "boundary_type": {
+            "enum": [
+              "primary_frontage",
+              "secondary_frontage",
+              "side",
+              "rear",
+              "water"
+            ],
+            "title": "Boundary Type",
+            "type": "string"
+          },
+          "building_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Building Id",
+            "type": "string"
+          },
+          "required_setback_ft": {
+            "items": {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Required Setback Ft",
+            "type": "array"
+          },
+          "source_ref": {
+            "maxLength": 4096,
+            "minLength": 1,
+            "title": "Source Ref",
+            "type": "string"
+          }
+        },
+        "required": [
+          "building_id",
+          "boundary_type",
+          "required_setback_ft",
+          "source_ref"
+        ],
+        "title": "AbuttingBoundarySetback",
+        "type": "object"
+      },
+      "AbuttingParcelDetail": {
+        "additionalProperties": false,
+        "properties": {
+          "buildings": {
+            "items": {
+              "$ref": "#/components/schemas/ParcelBuildingProjection"
+            },
+            "maxItems": 100,
+            "title": "Buildings",
+            "type": "array"
+          },
+          "identity": {
+            "$ref": "#/components/schemas/AbuttingParcelIdentity"
+          },
+          "setback_relative_to_subject": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AbuttingRelativeSetback"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "zoning_state": {
+            "$ref": "#/components/schemas/ResourceState"
+          }
+        },
+        "required": [
+          "identity",
+          "zoning_state"
+        ],
+        "title": "AbuttingParcelDetail",
+        "type": "object"
+      },
+      "AbuttingParcelIdentity": {
+        "additionalProperties": false,
+        "properties": {
+          "abutting_parcel_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 100,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Abutting Parcel Ids"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "apn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Apn"
+          },
+          "bearing_degrees": {
+            "anyOf": [
+              {
+                "exclusiveMaximum": 360.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bearing Degrees"
+          },
+          "centroid": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ParcelCentroid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "direction": {
+            "anyOf": [
+              {
+                "enum": [
+                  "N",
+                  "NE",
+                  "E",
+                  "SE",
+                  "S",
+                  "SW",
+                  "W",
+                  "NW"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Direction"
+          },
+          "direction_state": {
+            "$ref": "#/components/schemas/ResourceState"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "place_id": {
+            "title": "Place Id",
+            "type": "string"
+          },
+          "postal_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Postal Code"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State"
+          }
+        },
+        "required": [
+          "id",
+          "place_id",
+          "direction_state"
+        ],
+        "title": "AbuttingParcelIdentity",
+        "type": "object"
+      },
+      "AbuttingParcelMeta": {
+        "additionalProperties": false,
+        "properties": {
+          "included_groups": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Included Groups",
+            "type": "array"
+          },
+          "request_id": {
+            "title": "Request Id",
+            "type": "string"
+          },
+          "resource_states": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ResourceState"
+            },
+            "title": "Resource States",
+            "type": "object"
+          },
+          "selected_fields": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Selected Fields",
+            "type": "array"
+          }
+        },
+        "required": [
+          "request_id",
+          "included_groups",
+          "selected_fields"
+        ],
+        "title": "AbuttingParcelMeta",
+        "type": "object"
+      },
+      "AbuttingParcelProjection": {
+        "additionalProperties": false,
+        "properties": {
+          "abutting": {
+            "items": {
+              "$ref": "#/components/schemas/AbuttingParcelDetail"
+            },
+            "maxItems": 100,
+            "title": "Abutting",
+            "type": "array"
+          },
+          "buildings": {
+            "items": {
+              "$ref": "#/components/schemas/ParcelBuildingProjection"
+            },
+            "maxItems": 100,
+            "title": "Buildings",
+            "type": "array"
+          },
+          "existing_building_summary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ExistingBuildingSummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "geography": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ParcelGeographyDetail"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "identity": {
+            "$ref": "#/components/schemas/ParcelIdentity"
+          },
+          "site_context": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ParcelSiteContext"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "uses": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ParcelUseItem"
+                },
+                "maxItems": 500,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uses"
+          }
+        },
+        "required": [
+          "identity"
+        ],
+        "title": "AbuttingParcelProjection",
+        "type": "object"
+      },
+      "AbuttingParcelResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/AbuttingParcelProjection"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/AbuttingParcelMeta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ],
+        "title": "AbuttingParcelResponse",
+        "type": "object"
+      },
+      "AbuttingRelativeSetback": {
+        "additionalProperties": false,
+        "properties": {
+          "freshness": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceFreshness"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reference_parcel_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Reference Parcel Id",
+            "type": "string"
+          },
+          "state": {
+            "$ref": "#/components/schemas/ResourceState"
+          },
+          "unavailable_reason": {
+            "anyOf": [
+              {
+                "const": "shared_boundary_classification_unavailable",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unavailable Reason"
+          },
+          "units": {
+            "const": "ft",
+            "default": "ft",
+            "title": "Units",
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AbuttingBoundarySetback"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "state",
+          "reference_parcel_id"
+        ],
+        "title": "AbuttingRelativeSetback",
+        "type": "object"
+      },
       "AddressLookup": {
         "additionalProperties": false,
         "properties": {
@@ -22,6 +431,51 @@
           "postal_code"
         ],
         "title": "AddressLookup",
+        "type": "object"
+      },
+      "CalibrationAttribute": {
+        "additionalProperties": false,
+        "properties": {
+          "AttributeValue": {
+            "anyOf": [
+              {
+                "maxLength": 20000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attributevalue"
+          }
+        },
+        "title": "CalibrationAttribute",
+        "type": "object"
+      },
+      "CalibrationValue": {
+        "additionalProperties": false,
+        "properties": {
+          "Value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "ValueAttributes": {
+            "items": {
+              "$ref": "#/components/schemas/CalibrationAttribute"
+            },
+            "maxItems": 100,
+            "title": "Valueattributes",
+            "type": "array"
+          }
+        },
+        "title": "CalibrationValue",
         "type": "object"
       },
       "CoordinateLookup": {
@@ -691,6 +1145,13 @@
             "title": "Request Id",
             "type": "string"
           },
+          "resource_states": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ResourceState"
+            },
+            "title": "Resource States",
+            "type": "object"
+          },
           "selected_fields": {
             "items": {
               "type": "string"
@@ -711,6 +1172,21 @@
         "additionalProperties": false,
         "description": "Bounded selector response for one authorized parcel.",
         "properties": {
+          "abutting": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AbuttingParcelDetail"
+                },
+                "maxItems": 100,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Abutting"
+          },
           "buildings": {
             "items": {
               "$ref": "#/components/schemas/ParcelBuildingProjection"
@@ -751,6 +1227,21 @@
                 "type": "null"
               }
             ]
+          },
+          "uses": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ParcelUseItem"
+                },
+                "maxItems": 500,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uses"
           }
         },
         "required": [
@@ -1231,6 +1722,26 @@
             ]
           },
           "abutting_streets": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "faa_designation_reported": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceValue_bool_"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "faa_designations": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/ResourceValue_list_ParcelDesignation__"
@@ -2723,6 +3234,20 @@
       "ZoningStandards": {
         "additionalProperties": false,
         "properties": {
+          "calibration_general": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/CalibrationValue"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calibration General"
+          },
           "floor_area_ratio": {
             "anyOf": [
               {
@@ -4394,7 +4919,7 @@
             }
           },
           {
-            "description": "Optional response groups: geography, lot, buildings, frontages, zoning, uses, setbacks, standards, and site_context.",
+            "description": "Optional response groups: geography, lot, buildings, frontages, zoning, uses, setbacks, standards, site_context, and abutting. Uses includes complete records (up to 500); abutting includes county-authorized neighbors and their setbacks.",
             "in": "query",
             "name": "include",
             "required": false,
@@ -4410,7 +4935,7 @@
                   "type": "null"
                 }
               ],
-              "description": "Optional response groups: geography, lot, buildings, frontages, zoning, uses, setbacks, standards, and site_context.",
+              "description": "Optional response groups: geography, lot, buildings, frontages, zoning, uses, setbacks, standards, site_context, and abutting. Uses includes complete records (up to 500); abutting includes county-authorized neighbors and their setbacks.",
               "title": "Include"
             }
           },
@@ -4518,9 +5043,9 @@
           "v2-parcels"
         ],
         "x-gridics-audience": "public",
-        "x-gridics-billing-unit": "one standard request plus one returned parcel row",
+        "x-gridics-billing-unit": "one standard request plus the subject and requested abutting parcel rows; reserves up to 101 rows with abutting",
         "x-gridics-market-access": "Requires one canonical entitled county Place ID. Unknown and unauthorized parcels or counties share the same not-found response. Includes and fields only narrow existing grants.",
-        "x-gridics-plan-requirement": "Standard parcel access for identity and lot data; zoning_query for zoning, uses, setbacks, and standards.",
+        "x-gridics-plan-requirement": "Standard parcel access for identity and lot data; zoning_query for zoning, uses, setbacks, and standards and abutting parcels. Complete use records are included with uses.",
         "x-gridics-product": "Parcel Detail",
         "x-gridics-quota-metric": "standard_api_calls and parcel_result_rows",
         "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
@@ -4529,6 +5054,137 @@
           "retrieve parcel identity from the id returned by lookup or search; pass its returned place_id",
           "select lot details",
           "select zoning and setbacks"
+        ]
+      }
+    },
+    "/v2/parcels/{parcel_id}/abutting": {
+      "get": {
+        "description": "Resolves up to 100 abutting parcel IDs in the authorized county. Directions use eight compass sectors and initial WGS84 bearings clockwise from north. Unavailable centroids or coincident points have no direction. Returns the original parcel with detailed neighbors in data.abutting. Each neighbor building retains its own effective setback resources in feet and availability states. These are the neighbor's setbacks, not a determination of subject-parcel transition requirements. setback_relative_to_subject identifies the reference parcel and keeps requirements by building/boundary. Current upstream data lacks shared-boundary classification; this resource is not_available with an explicit reason. Centroid directions never select a relative setback. Unavailable adjacency and empty adjacency are distinguished by meta.resource_states.abutting. Reserves up to 100 result rows; final usage counts only returned neighbors.",
+        "operationId": "getAbuttingParcels",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "parcel_id",
+            "required": true,
+            "schema": {
+              "title": "Parcel Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "place_id",
+            "required": true,
+            "schema": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Place Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/AbuttingParcelResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Missing, invalid, revoked, or wrong-environment API key."
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Parcel or zoning access is not included"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Unknown or unauthorized source or abutting parcel"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "A per-second rate limit, monthly quota, or runtime spending control was exceeded."
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Upstream parcel or zoning service failure"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicError"
+                }
+              }
+            },
+            "description": "Required authorization, catalog, limits, usage, or upstream state is unavailable."
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "summary": "Get abutting parcels with zoning, setbacks and relative centroid direction",
+        "tags": [
+          "v2-parcels"
+        ],
+        "x-gridics-audience": "public",
+        "x-gridics-billing-unit": "one standard request plus returned abutting parcel rows; reserves up to 100 rows",
+        "x-gridics-market-access": "Every parcel is resolved within the same canonical entitled county Place ID.",
+        "x-gridics-plan-requirement": "Parcel access and zoning_query with zoning.query permission.",
+        "x-gridics-product": "Parcel Detail",
+        "x-gridics-quota-metric": "standard_api_calls and parcel_result_rows",
+        "x-gridics-rate-limit": "Subject to the app's configured rate, quota, and spending controls.",
+        "x-gridics-required-capability": "parcel_search",
+        "x-gridics-workflows": [
+          "abutting parcel zoning",
+          "relative centroid directions"
         ]
       }
     },

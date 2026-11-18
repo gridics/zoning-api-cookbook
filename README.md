@@ -40,6 +40,7 @@ when you are ready to use entitled live data.
 | Resolve one free-form address or APN | [Location Search forward](recipes/18-location-search/) |
 | Add interactive autocomplete | [Location Search suggest → retrieve](recipes/18-location-search/) |
 | Inspect abutting parcel zoning and centroid directions | [Abutting parcels example](examples/abutting-parcels/) |
+| Request selected parcel detail fields | [Parcel detail and field selection](docs/guides/parcel-zoning-data.md#request-only-the-fields-you-need) |
 | Look up an exact known parcel | [Property lookup](recipes/03-property-lookup/) → [Parcel zoning](recipes/20-parcel-zoning/) |
 | Search parcels with common filters | [Simple search](recipes/05-simple-search/) |
 | Search with verified typed filters | [Field discovery](recipes/08-advanced-search/) → [Advanced search](recipes/08-advanced-search/) |
